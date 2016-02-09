@@ -18,7 +18,9 @@
 		72A828261C68F37100B25CEE /* RIGPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A828251C68F37100B25CEE /* RIGPhotoViewController.swift */; };
 		72A8282B1C69346100B25CEE /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72A8281D1C68F2BF00B25CEE /* AlamofireImage.framework */; };
 		72A8282C1C69346300B25CEE /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72A8281C1C68F2BF00B25CEE /* Alamofire.framework */; };
-		72A8282E1C693CC100B25CEE /* RIGImageZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8282D1C693CC100B25CEE /* RIGImageZoomView.swift */; };
+		72A8282E1C693CC100B25CEE /* RIGImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8282D1C693CC100B25CEE /* RIGImageViewController.swift */; };
+		72A828301C6A4A3D00B25CEE /* RIGPhotoViewerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8282F1C6A4A3D00B25CEE /* RIGPhotoViewerItem.swift */; };
+		72A828321C6A78E600B25CEE /* RIGAutoCenteringScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A828311C6A78E600B25CEE /* RIGAutoCenteringScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +60,10 @@
 		72A828171C68F24500B25CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72A8281C1C68F2BF00B25CEE /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		72A8281D1C68F2BF00B25CEE /* AlamofireImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireImage.framework; path = Carthage/Build/iOS/AlamofireImage.framework; sourceTree = "<group>"; };
-		72A828251C68F37100B25CEE /* RIGPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGPhotoViewController.swift; sourceTree = "<group>"; };
-		72A8282D1C693CC100B25CEE /* RIGImageZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGImageZoomView.swift; sourceTree = "<group>"; };
+		72A828251C68F37100B25CEE /* RIGPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RIGPhotoViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		72A8282D1C693CC100B25CEE /* RIGImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RIGImageViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		72A8282F1C6A4A3D00B25CEE /* RIGPhotoViewerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGPhotoViewerItem.swift; sourceTree = "<group>"; };
+		72A828311C6A78E600B25CEE /* RIGAutoCenteringScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGAutoCenteringScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +112,9 @@
 				72A827FC1C68F17900B25CEE /* RIGPhotoViewer.h */,
 				72A827FE1C68F17900B25CEE /* Info.plist */,
 				72A828251C68F37100B25CEE /* RIGPhotoViewController.swift */,
-				72A8282D1C693CC100B25CEE /* RIGImageZoomView.swift */,
+				72A8282D1C693CC100B25CEE /* RIGImageViewController.swift */,
+				72A8282F1C6A4A3D00B25CEE /* RIGPhotoViewerItem.swift */,
+				72A828311C6A78E600B25CEE /* RIGAutoCenteringScrollView.swift */,
 			);
 			path = RIGPhotoViewer;
 			sourceTree = "<group>";
@@ -269,7 +275,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72A8282E1C693CC100B25CEE /* RIGImageZoomView.swift in Sources */,
+				72A8282E1C693CC100B25CEE /* RIGImageViewController.swift in Sources */,
+				72A828321C6A78E600B25CEE /* RIGAutoCenteringScrollView.swift in Sources */,
+				72A828301C6A4A3D00B25CEE /* RIGPhotoViewerItem.swift in Sources */,
 				72A828261C68F37100B25CEE /* RIGPhotoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

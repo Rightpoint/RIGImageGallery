@@ -18,49 +18,30 @@ public protocol RIGPhotoViewControllerDelegate {
 
 }
 
-public class RIGPhotoViewerImage {
+public class RIGPhotoViewController: UIPageViewController {
 
-    public let image: UIImage?
-    public let placeholderImage: UIImage?
-    public let title: String?
+//    private let pageViewController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
 
-    public var displayImage: UIImage? {
-        return image ?? placeholderImage
-    }
-
-    public func updateImage(image:UIImage?) -> RIGPhotoViewerImage {
-        return RIGPhotoViewerImage(image: image, placeholderImage: placeholderImage, title: title)
-    }
-
-    public init(image: UIImage? = nil, placeholderImage: UIImage? = nil, title: String? = nil) {
-        self.image = image
-        self.placeholderImage = placeholderImage
-        self.title = title
-    }
-
-}
-
-public class RIGPhotoViewController: UIViewController {
-
-    private let pageViewController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
+    private var navigationBarsHidden: Bool = false
 
     public var photoViewDelegate: RIGPhotoViewControllerDelegate?
     public var placeholder: UIImage? = nil
-    public var images: [RIGPhotoViewerImage] = [] {
+    public var images: [RIGPhotoViewerItem] = [] {
         willSet {
-            if pageViewController.viewControllers?.isEmpty ?? true {
-                let newView = RIGImageZoomView()
-                let activeItem = newValue[currentImage]
-                newView.photoImage = activeItem
-                pageViewController.setViewControllers([newView], direction: .Forward, animated: false, completion: nil)
+            if viewControllers?.isEmpty ?? true {
+                let newView = RIGImageViewController()
+//                newView.scrollView.contentInset = scrollViewInset
+                let viewerItem = newValue[currentImage]
+                newView.viewerItem = viewerItem
+                setViewControllers([newView], direction: .Forward, animated: false, completion: nil)
             }
-            guard let index = indexOfCurrentViewer() where index < pageViewController.viewControllers?.count ?? 0,
-                let activeView = pageViewController.viewControllers?[index] as? RIGImageZoomView else {
+            guard let index = indexOfCurrentViewer() where index < viewControllers?.count ?? 0,
+                let activeView = viewControllers?[index] as? RIGImageViewController else {
                     return
             }
             let oldValue = images
             if newValue[index] !== oldValue[index] {
-                activeView.photoImage = newValue[index]
+                activeView.viewerItem = newValue[index]
             }
         }
     }
@@ -73,8 +54,9 @@ public class RIGPhotoViewController: UIViewController {
 
     public var currentImage: Int = 0 {
         didSet {
-            let newView = RIGImageZoomView()
-            newView.photoImage = images[currentImage]
+            let newView = RIGImageViewController()
+//            newView.scrollView.contentInset = scrollViewInset
+            newView.viewerItem = images[currentImage]
             let direction: UIPageViewControllerNavigationDirection
             if oldValue < currentImage {
                 direction = .Forward
@@ -82,38 +64,41 @@ public class RIGPhotoViewController: UIViewController {
             else {
                 direction = .Reverse
             }
-            pageViewController.setViewControllers([newView], direction: direction, animated: true, completion: nil)
+            setViewControllers([newView], direction: direction, animated: true, completion: nil)
         }
     }
 
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        pageViewController.dataSource = self
+    public init() {
+        super.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
+        dataSource = self
+        automaticallyAdjustsScrollViewInsets = false
     }
 
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func loadView() {
-        view = UIView()
-        view.clipsToBounds = false
-        addChildViewController(pageViewController)
-        view.addSubview(pageViewController.view)
+    public override func viewDidLoad() {
         configureDoneButton()
-        automaticallyAdjustsScrollViewInsets = false
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "toggleBarVisiblity")
+        view.addGestureRecognizer(tapGestureRecognizer)
         navigationItem.leftBarButtonItem = doneButton
         view.backgroundColor = UIColor.blackColor()
-        configureConstraints()
     }
 
     public override func viewWillAppear(animated: Bool) {
-        navigationController?.toolbarHidden = false
-        let photoPage = RIGImageZoomView()
+        super.viewWillAppear(animated)
+        updateBarStatus()
+        let photoPage = RIGImageViewController()
+//        photoPage.scrollView.contentInset = scrollViewInset
         if currentImage < images.count {
-            photoPage.photoImage = images[currentImage]
-            pageViewController.setViewControllers([photoPage], direction: .Forward, animated: false, completion: nil)
+            photoPage.viewerItem = images[currentImage]
+            setViewControllers([photoPage], direction: .Forward, animated: false, completion: nil)
         }
+    }
+
+    public override func prefersStatusBarHidden() -> Bool {
+        return navigationBarsHidden
     }
 
 }
@@ -121,6 +106,17 @@ public class RIGPhotoViewController: UIViewController {
 // MARK: - Actions
 
 internal extension RIGPhotoViewController {
+
+    func toggleBarVisiblity() {
+        navigationBarsHidden = !navigationBarsHidden
+        updateBarStatus()
+    }
+
+    func updateBarStatus() {
+        navigationController?.setToolbarHidden(navigationBarsHidden, animated: true)
+        navigationController?.setNavigationBarHidden(navigationBarsHidden, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+    }
 
     func dismissPhotoView(sender: UIBarButtonItem) {
         if let pDelegate = photoViewDelegate {
@@ -175,40 +171,43 @@ private extension RIGPhotoViewController {
 extension RIGPhotoViewController: UIPageViewControllerDataSource {
 
     public func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        guard let index = indexOfPhotoViewer(viewController as? RIGImageZoomView)?.successor()
+        guard let index = indexOfPhotoViewer(viewController as? RIGImageViewController)?.successor()
             where index < images.count else {
             return nil
         }
-        let zoomView = RIGImageZoomView()
-        zoomView.photoImage = images[index]
+        let zoomView = RIGImageViewController()
+        zoomView.viewerItem = images[index]
         return zoomView
     }
 
     public func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        guard let index = indexOfPhotoViewer(viewController as? RIGImageZoomView)?.predecessor()
+        guard let index = indexOfPhotoViewer(viewController as? RIGImageViewController)?.predecessor()
             where index >= 0 else {
                 return nil
         }
-        let zoomView = RIGImageZoomView()
-        zoomView.photoImage = images[index]
+        let zoomView = RIGImageViewController()
+        zoomView.viewerItem = images[index]
         return zoomView
     }
+}
 
-    private func indexOfCurrentViewer() -> Int? {
-        guard currentImage < pageViewController.viewControllers?.count ?? 0 else {
+private extension RIGPhotoViewController {
+
+    func indexOfCurrentViewer() -> Int? {
+        guard currentImage < viewControllers?.count ?? 0 else {
             return nil
         }
-        return indexOfPhotoViewer(pageViewController.viewControllers?[currentImage] as? RIGImageZoomView)
+        return indexOfPhotoViewer(viewControllers?[currentImage] as? RIGImageViewController)
     }
 
-    private func indexOfPhotoViewer(photoViewer: RIGImageZoomView?) -> Int? {
+    func indexOfPhotoViewer(photoViewer: RIGImageViewController?) -> Int? {
         guard let viewer = photoViewer else {
             return nil
         }
-        return indexOfItem(viewer.photoImage)
+        return indexOfItem(viewer.viewerItem)
     }
 
-    private func indexOfItem(item: RIGPhotoViewerImage?) -> Int? {
+    func indexOfItem(item: RIGPhotoViewerItem?) -> Int? {
         guard let item = item else {
             return nil
         }
@@ -218,19 +217,8 @@ extension RIGPhotoViewController: UIPageViewControllerDataSource {
         return index
     }
 
-}
-
-private extension RIGPhotoViewController {
-
-    func configureConstraints() {
-        pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        let constraints: [NSLayoutConstraint] = [
-            pageViewController.view.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor),
-            pageViewController.view.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor),
-            pageViewController.view.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
-            pageViewController.view.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
-        ]
-
-        NSLayoutConstraint.activateConstraints(constraints)
-    }
+//    private var scrollViewInset: UIEdgeInsets {
+//        loadViewIfNeeded()
+//        return UIEdgeInsets(top: topLayoutGuide.length, left: 0, bottom: bottomLayoutGuide.length, right: 0)
+//    }
 }
