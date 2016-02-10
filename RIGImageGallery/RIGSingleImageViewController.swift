@@ -8,7 +8,7 @@
 
 import UIKit
 
-internal class RIGSingleImageViewController: UIViewController {
+class RIGSingleImageViewController: UIViewController {
 
     var viewIndex:Int  = 0
 
@@ -25,7 +25,7 @@ internal class RIGSingleImageViewController: UIViewController {
         }
     }
 
-    internal let scrollView = RIGAutoCenteringScrollView()
+    let scrollView = RIGAutoCenteringScrollView()
 
     override func loadView() {
         automaticallyAdjustsScrollViewInsets = false

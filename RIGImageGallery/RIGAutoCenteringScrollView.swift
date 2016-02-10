@@ -8,7 +8,7 @@
 
 import UIKit
 
-internal class RIGAutoCenteringScrollView: UIScrollView {
+class RIGAutoCenteringScrollView: UIScrollView {
 
     var allowZoom: Bool = false
 
@@ -63,7 +63,7 @@ internal class RIGAutoCenteringScrollView: UIScrollView {
 
 }
 
-internal extension RIGAutoCenteringScrollView {
+extension RIGAutoCenteringScrollView {
 
     func toggleZoom() {
         if zoomScale != minimumZoomScale {
