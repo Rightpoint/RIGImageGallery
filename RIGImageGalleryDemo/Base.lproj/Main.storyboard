@@ -8,7 +8,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="RigPhotoViewerDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="RIGImageGalleryDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -24,19 +24,10 @@
                                     <action selector="showGallery:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rX1-tg-r0W"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bh0-vf-q4s">
-                                <rect key="frame" x="258" y="58" width="84" height="30"/>
-                                <state key="normal" title="Show Single"/>
-                                <connections>
-                                    <action selector="showSingle:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q7G-Nc-ndK"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yr0-vA-GP8" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="hE3-jp-tQw"/>
-                            <constraint firstItem="bh0-vf-q4s" firstAttribute="top" secondItem="yr0-vA-GP8" secondAttribute="bottom" constant="8" symbolic="YES" id="iPa-T7-P3a"/>
-                            <constraint firstItem="bh0-vf-q4s" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jJh-By-aVk"/>
                             <constraint firstItem="yr0-vA-GP8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pac-xp-WXf"/>
                         </constraints>
                     </view>

@@ -8,15 +8,11 @@
 
 import UIKit
 
-public class RIGImageGalleryItem {
+public struct RIGImageGalleryItem {
 
     public let image: UIImage?
     public let placeholderImage: UIImage?
     public let title: String?
-
-    public var displayImage: UIImage? {
-        return image ?? placeholderImage
-    }
 
     public func updateImage(image:UIImage?) -> RIGImageGalleryItem {
         return RIGImageGalleryItem(image: image, placeholderImage: placeholderImage, title: title)

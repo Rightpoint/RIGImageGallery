@@ -10,6 +10,8 @@ import UIKit
 
 internal class RIGAutoCenteringScrollView: UIScrollView {
 
+    var allowZoom: Bool = false
+
     var baseInsets: UIEdgeInsets = UIEdgeInsets() {
         didSet {
             updateZoomScale(preserveScale: true)
@@ -18,6 +20,9 @@ internal class RIGAutoCenteringScrollView: UIScrollView {
 
     var zoomImage: UIImage? {
         didSet {
+            if oldValue === zoomImage {
+                return
+            }
             if let img = zoomImage {
                 let imageView: UIImageView
                 if let img = contentView {
@@ -137,10 +142,11 @@ private extension RIGAutoCenteringScrollView {
 extension RIGAutoCenteringScrollView: UIScrollViewDelegate {
 
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return contentView
+        return allowZoom ? contentView : nil
     }
 
     func scrollViewDidZoom(scrollView: UIScrollView) {
         centerContent()
     }
+
 }

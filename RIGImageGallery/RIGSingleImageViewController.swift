@@ -10,9 +10,18 @@ import UIKit
 
 internal class RIGSingleImageViewController: UIViewController {
 
+    var viewIndex:Int  = 0
+
     var viewerItem: RIGImageGalleryItem? {
         didSet {
-            scrollView.zoomImage = viewerItem?.displayImage
+            if viewerItem?.image != nil {
+                scrollView.allowZoom = true
+                self.scrollView.zoomImage = self.viewerItem?.image
+            }
+            else {
+                scrollView.allowZoom = false
+                scrollView.zoomImage = viewerItem?.placeholderImage
+            }
         }
     }
 

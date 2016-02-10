@@ -48,7 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		72A828091C68F24500B25CEE /* RigPhotoViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RigPhotoViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RIGImageGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72A8280B1C68F24500B25CEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72A8280D1C68F24500B25CEE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		72A828101C68F24500B25CEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -93,14 +93,14 @@
 				72A828041C68F1C100B25CEE /* Frameworks */,
 				72A827FA1C68F17900B25CEE /* Products */,
 				72BA26531C6B985900F1FE22 /* RIGImageGallery */,
-				72A8280A1C68F24500B25CEE /* RigPhotoViewerDemo */,
+				72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */,
 			);
 			sourceTree = "<group>";
 		};
 		72A827FA1C68F17900B25CEE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				72A828091C68F24500B25CEE /* RigPhotoViewerDemo.app */,
+				72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */,
 				72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */,
 			);
 			name = Products;
@@ -115,7 +115,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		72A8280A1C68F24500B25CEE /* RigPhotoViewerDemo */ = {
+		72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */ = {
 			isa = PBXGroup;
 			children = (
 				72A8280B1C68F24500B25CEE /* AppDelegate.swift */,
@@ -125,18 +125,18 @@
 				72A828141C68F24500B25CEE /* LaunchScreen.storyboard */,
 				72A828171C68F24500B25CEE /* Info.plist */,
 			);
-			path = RigPhotoViewerDemo;
+			path = RIGImageGalleryDemo;
 			sourceTree = "<group>";
 		};
 		72BA26531C6B985900F1FE22 /* RIGImageGallery */ = {
 			isa = PBXGroup;
 			children = (
-				72BA265E1C6B987200F1FE22 /* RIGAutoCenteringScrollView.swift */,
-				72BA265F1C6B987200F1FE22 /* RIGImageGalleryViewController.swift */,
-				72BA26601C6B987200F1FE22 /* RIGImageGalleryItem.swift */,
-				72BA26611C6B987200F1FE22 /* RIGSingleImageViewController.swift */,
-				72BA26541C6B985900F1FE22 /* RIGImageGallery.h */,
 				72BA26561C6B985900F1FE22 /* Info.plist */,
+				72BA265E1C6B987200F1FE22 /* RIGAutoCenteringScrollView.swift */,
+				72BA26541C6B985900F1FE22 /* RIGImageGallery.h */,
+				72BA26601C6B987200F1FE22 /* RIGImageGalleryItem.swift */,
+				72BA265F1C6B987200F1FE22 /* RIGImageGalleryViewController.swift */,
+				72BA26611C6B987200F1FE22 /* RIGSingleImageViewController.swift */,
 			);
 			path = RIGImageGallery;
 			sourceTree = "<group>";
@@ -155,9 +155,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		72A828081C68F24500B25CEE /* RigPhotoViewerDemo */ = {
+		72A828081C68F24500B25CEE /* RIGImageGalleryDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 72A828181C68F24500B25CEE /* Build configuration list for PBXNativeTarget "RigPhotoViewerDemo" */;
+			buildConfigurationList = 72A828181C68F24500B25CEE /* Build configuration list for PBXNativeTarget "RIGImageGalleryDemo" */;
 			buildPhases = (
 				72A828051C68F24500B25CEE /* Sources */,
 				72A828061C68F24500B25CEE /* Frameworks */,
@@ -170,9 +170,9 @@
 			dependencies = (
 				72BA26581C6B985900F1FE22 /* PBXTargetDependency */,
 			);
-			name = RigPhotoViewerDemo;
+			name = RIGImageGalleryDemo;
 			productName = RigPhotoViewerDemo;
-			productReference = 72A828091C68F24500B25CEE /* RigPhotoViewerDemo.app */;
+			productReference = 72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 		72BA26511C6B985900F1FE22 /* RIGImageGallery */ = {
@@ -226,7 +226,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				72A828081C68F24500B25CEE /* RigPhotoViewerDemo */,
+				72A828081C68F24500B25CEE /* RIGImageGalleryDemo */,
 				72BA26511C6B985900F1FE22 /* RIGImageGallery */,
 			);
 		};
@@ -422,9 +422,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = RigPhotoViewerDemo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigPhotoViewerDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -441,9 +441,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = RigPhotoViewerDemo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigPhotoViewerDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -500,7 +500,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		72A828181C68F24500B25CEE /* Build configuration list for PBXNativeTarget "RigPhotoViewerDemo" */ = {
+		72A828181C68F24500B25CEE /* Build configuration list for PBXNativeTarget "RIGImageGalleryDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				72A828191C68F24500B25CEE /* Debug */,

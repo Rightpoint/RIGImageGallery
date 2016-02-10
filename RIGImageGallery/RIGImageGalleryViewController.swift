@@ -30,14 +30,13 @@ public class RIGImageGalleryViewController: UIPageViewController {
     public var photoViewDelegate: RIGPhotoViewControllerDelegate?
     public var placeholder: UIImage? = nil
     public var images: [RIGImageGalleryItem] = [] {
-        willSet {
-            guard let index = indexOfCurrentViewer() where index < viewControllers?.count ?? 0,
-                let activeView = viewControllers?[index] as? RIGSingleImageViewController else {
-                    return
-            }
-            let oldValue = images
-            if newValue[index] !== oldValue[index] {
-                activeView.viewerItem = newValue[index]
+        didSet {
+            for childView in childViewControllers {
+                if let indexedView = childView as? RIGSingleImageViewController
+                    where indexedView.viewIndex < images.count {
+                        indexedView.viewerItem = images[indexedView.viewIndex]
+                        indexedView.scrollView.baseInsets = scrollViewInset
+                }
             }
         }
     }
@@ -48,18 +47,20 @@ public class RIGImageGalleryViewController: UIPageViewController {
         }
     }
 
-    public var currentImage: Int = 0 {
-        didSet {
-            let newView = rigImageViewWithImage(images[currentImage])
-            let direction: UIPageViewControllerNavigationDirection
-            if oldValue < currentImage {
-                direction = .Forward
-            }
-            else {
-                direction = .Reverse
-            }
-            setViewControllers([newView], direction: direction, animated: true, completion: nil)
+    public private(set) var currentImage: Int = 0
+
+    public func setCurrentImage(currentImage: Int, animated: Bool) {
+        let newView = rigImageViewWithImage(images[currentImage])
+        let direction: UIPageViewControllerNavigationDirection
+        if self.currentImage < currentImage {
+            direction = .Forward
         }
+        else {
+            direction = .Reverse
+        }
+        self.currentImage = currentImage
+        setViewControllers([newView], direction: direction, animated: animated, completion: nil)
+
     }
 
     public init() {
@@ -161,20 +162,23 @@ internal extension RIGImageGalleryViewController {
 extension RIGImageGalleryViewController: UIPageViewControllerDataSource {
 
     public func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        guard let index = indexOfPhotoViewer(viewController as? RIGSingleImageViewController)?.successor()
+
+        guard let index = (viewController as? RIGSingleImageViewController)?.viewIndex.successor()
             where index < images.count else {
             return nil
         }
         let zoomView = rigImageViewWithImage(images[index])
+        zoomView.viewIndex = index
         return zoomView
     }
 
     public func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        guard let index = indexOfPhotoViewer(viewController as? RIGSingleImageViewController)?.predecessor()
+        guard let index = (viewController as? RIGSingleImageViewController)?.viewIndex.predecessor()
             where index >= 0 else {
                 return nil
         }
         let zoomView = rigImageViewWithImage(images[index])
+        zoomView.viewIndex = index
         return zoomView
     }
 
@@ -192,6 +196,9 @@ extension RIGImageGalleryViewController: UIPageViewControllerDelegate {
 
     public func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         currentImageViewController = viewControllers?.first as? RIGSingleImageViewController
+        if let index = currentImageViewController?.viewIndex {
+            currentImage = index
+        }
     }
 }
 
@@ -204,29 +211,29 @@ private extension RIGImageGalleryViewController {
         doneButton.action = "dismissPhotoView:"
     }
     
-    func indexOfCurrentViewer() -> Int? {
-        guard currentImage < viewControllers?.count ?? 0 else {
-            return nil
-        }
-        return indexOfPhotoViewer(viewControllers?[currentImage] as? RIGSingleImageViewController)
-    }
+//    func indexOfCurrentViewer() -> Int? {
+//        guard currentImage < viewControllers?.count ?? 0 else {
+//            return nil
+//        }
+//        return indexOfPhotoViewer(viewControllers?[currentImage] as? RIGSingleImageViewController)
+//    }
 
-    func indexOfPhotoViewer(photoViewer: RIGSingleImageViewController?) -> Int? {
-        guard let viewer = photoViewer else {
-            return nil
-        }
-        return indexOfItem(viewer.viewerItem)
-    }
+//    func indexOfPhotoViewer(photoViewer: RIGSingleImageViewController?) -> Int? {
+//        guard let viewer = photoViewer else {
+//            return nil
+//        }
+//        return indexOfItem(viewer.viewerItem)
+//    }
 
-    func indexOfItem(item: RIGImageGalleryItem?) -> Int? {
-        guard let item = item else {
-            return nil
-        }
-        let index = images.indexOf { img in
-            return img === item
-        }
-        return index
-    }
+//    func indexOfItem(item: RIGImageGalleryItem?) -> Int? {
+//        guard let item = item else {
+//            return nil
+//        }
+//        let index = images.indexOf { img in
+//            return img == item
+//        }
+//        return index
+//    }
 
     private func rigImageViewWithImage(image: RIGImageGalleryItem) -> RIGSingleImageViewController {
         let imageView = RIGSingleImageViewController()
