@@ -1,5 +1,5 @@
 //
-//  RIGImageViewController.swift
+//  RIGSingleImageViewController.swift
 //  RIGPhotoViewer
 //
 //  Created by Michael Skiba on 2/8/16.
@@ -8,17 +8,15 @@
 
 import UIKit
 
-public class RIGImageViewController: UIViewController {
+internal class RIGSingleImageViewController: UIViewController {
 
-    private var needsCentering = true
-
-    public var viewerItem: RIGPhotoViewerItem? {
+    var viewerItem: RIGImageGalleryItem? {
         didSet {
             scrollView.zoomImage = viewerItem?.displayImage
         }
     }
 
-    public var doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil) {
+    var doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil) {
         didSet {
             configureDoneButton()
         }
@@ -26,7 +24,7 @@ public class RIGImageViewController: UIViewController {
 
     internal let scrollView = RIGAutoCenteringScrollView()
 
-    public override func loadView() {
+    override func loadView() {
         configureDoneButton()
         automaticallyAdjustsScrollViewInsets = false
         view = scrollView
@@ -34,19 +32,19 @@ public class RIGImageViewController: UIViewController {
         view.clipsToBounds = true
     }
 
-    public override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.leftBarButtonItem = doneButton
     }
 
-    public override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
     }
 
 }
 
-extension RIGImageViewController {
+extension RIGSingleImageViewController {
 
     func dismissPhotoView(sender: UINavigationItem) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -54,7 +52,7 @@ extension RIGImageViewController {
 
 }
 
-private extension RIGImageViewController {
+private extension RIGSingleImageViewController {
 
     func configureDoneButton() {
         doneButton.target = self

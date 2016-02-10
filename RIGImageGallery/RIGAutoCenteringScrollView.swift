@@ -10,7 +10,11 @@ import UIKit
 
 internal class RIGAutoCenteringScrollView: UIScrollView {
 
-    var lastZoomScale: CGFloat?
+    var baseInsets: UIEdgeInsets = UIEdgeInsets() {
+        didSet {
+            updateZoomScale(preserveScale: true)
+        }
+    }
 
     var zoomImage: UIImage? {
         didSet {
@@ -31,7 +35,7 @@ internal class RIGAutoCenteringScrollView: UIScrollView {
                 contentView?.removeFromSuperview()
                 contentView = nil
             }
-            updateZoomScale()
+            updateZoomScale(preserveScale: false)
         }
     }
 
@@ -48,7 +52,7 @@ internal class RIGAutoCenteringScrollView: UIScrollView {
 
     override var frame: CGRect {
         didSet {
-            updateZoomScale()
+            updateZoomScale(preserveScale: true)
         }
     }
 
@@ -56,29 +60,20 @@ internal class RIGAutoCenteringScrollView: UIScrollView {
 
 internal extension RIGAutoCenteringScrollView {
 
-    func centerView(tapRecognizer: UITapGestureRecognizer) {
-        if zoomScale == minimumZoomScale {
-            if let lastZoom = lastZoomScale {
-                lastZoomScale = nil
-                setZoomScale(lastZoom, animated: true)
-            }
-        }
-        else {
-            lastZoomScale = zoomScale
+    func toggleZoom() {
+        if zoomScale != minimumZoomScale {
             setZoomScale(minimumZoomScale, animated: true)
         }
-
+        else {
+            setZoomScale(maximumZoomScale, animated: true)
+        }
     }
+
 }
 
 private extension RIGAutoCenteringScrollView {
 
-    func setupTapRecognizer() {
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "centerView:")
-        addGestureRecognizer(tapRecognizer)
-    }
-
-    func updateZoomScale() {
+    func updateZoomScale(preserveScale preserveScale: Bool) {
         guard let image = zoomImage else {
             contentSize = frame.size
             minimumZoomScale = 1
@@ -86,40 +81,55 @@ private extension RIGAutoCenteringScrollView {
             setZoomScale(1, animated: false)
             return
         }
-        contentSize = image.size
 
-        let wScale = frame.width / image.size.width
-        let hScale = frame.height / image.size.height
+        let adjustedFrame = UIEdgeInsetsInsetRect(frame, baseInsets)
+
+        let wScale = adjustedFrame.width / image.size.width
+        let hScale = adjustedFrame.height / image.size.height
+
+        let oldMin = minimumZoomScale
 
         minimumZoomScale = min(wScale, hScale)
         maximumZoomScale = max(1, minimumZoomScale * 3)
 
-        setZoomScale(minimumZoomScale, animated: false)
+        if preserveScale {
+            if zoomScale <= oldMin || zoomScale <= minimumZoomScale {
+                contentSize = image.size
+                setZoomScale(minimumZoomScale, animated: false)
+            }
+        }
+        else {
+            contentSize = image.size
+            setZoomScale(minimumZoomScale, animated: false)
+        }
+
         centerContent()
     }
 
+    // After much fiddling, using insets to correct zoom behavior was found at: http://petersteinberger.com/blog/2013/how-to-center-uiscrollview/
     func centerContent() {
         guard !CGSizeEqualToSize(contentSize, CGSize()) else {
             return
         }
+        let adjustedSize = UIEdgeInsetsInsetRect(bounds, baseInsets).size
         let vertical: CGFloat
         let horizontal: CGFloat
 
-        if (contentSize.width < bounds.size.width) {
-            horizontal = floor((bounds.size.width - contentSize.width) * 0.5)
+        if (contentSize.width < adjustedSize.width) {
+            horizontal = floor((adjustedSize.width - contentSize.width) * 0.5)
         }
         else {
             horizontal = 0
         }
 
-        if (contentSize.height < bounds.size.height) {
-            vertical = floor((bounds.size.height - contentSize.height) * 0.5)
+        if (contentSize.height < adjustedSize.height) {
+            vertical = floor((adjustedSize.height - contentSize.height) * 0.5)
         }
         else {
             vertical = 0
         }
 
-        self.contentInset = UIEdgeInsetsMake(vertical, horizontal, vertical, horizontal)
+        contentInset = UIEdgeInsets(top: vertical + baseInsets.top, left: horizontal + baseInsets.left, bottom: vertical + baseInsets.bottom, right: horizontal + baseInsets.right)
     }
 
 }

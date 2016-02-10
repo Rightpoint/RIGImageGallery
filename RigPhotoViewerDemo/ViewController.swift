@@ -7,13 +7,13 @@
 //
 
 import UIKit
-import RIGPhotoViewer
+import RIGImageGallery
 import Alamofire
 import AlamofireImage
 
 class ViewController: UIViewController {
 
-    var rigController: RIGPhotoViewController?
+    var rigController: RIGImageGalleryViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         ].flatMap { $0 }
 
     @IBAction func showGallery(sender: UIButton) {
-        let photoViewController = RIGPhotoViewController()
+        let photoViewController = RIGImageGalleryViewController()
         self.rigController = photoViewController
         photoViewController.photoViewDelegate = self
         loadImages()
@@ -42,19 +42,6 @@ class ViewController: UIViewController {
     }
 
     @IBAction func showSingle(sender: UIButton) {
-        let photoView = RIGImageViewController()
-        let navigationController = navBarWrappedViewController(photoView)
-        guard let firstURL = urls.first else {
-            return
-        }
-        let request = NSURLRequest(URL: firstURL)
-        photoView.viewerItem = RIGPhotoViewerItem()
-        ImageDownloader.defaultInstance.downloadImage(URLRequest: request, filter: nil) { response in
-            if let image = response.result.value {
-                photoView.viewerItem = photoView.viewerItem?.updateImage(image)
-            }
-        }
-        presentViewController(navigationController, animated: true, completion: nil)
     }
 
     private func navBarWrappedViewController(viewController: UIViewController) -> UINavigationController {
@@ -80,7 +67,7 @@ extension ViewController: RIGPhotoViewControllerDelegate {
         guard let rig = rigController else {
             return
         }
-        rig.images = Array<RIGPhotoViewerItem>.init(count: reqs.count, repeatedValue: RIGPhotoViewerItem())
+        rig.images = Array<RIGImageGalleryItem>.init(count: reqs.count, repeatedValue: RIGImageGalleryItem())
         let downloader = ImageDownloader.defaultInstance
         downloader.downloadImages(URLRequests: reqs, filter: nil) { response in
             guard let request = response.request, let image = response.result.value else {
