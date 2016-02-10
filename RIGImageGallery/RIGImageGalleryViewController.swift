@@ -8,10 +8,6 @@
 
 import UIKit
 
-public typealias RIGImageViewConstructor = () -> UIImageView
-public typealias RIGImageURLLoader = (imageView: UIImageView, url: NSURL) -> Void
-public typealias RIGImageLoaderCleanup = (imageView: UIImageView) -> Void
-
 @objc public protocol RIGPhotoViewControllerDelegate {
 
     func dismissPhotoViewer()
