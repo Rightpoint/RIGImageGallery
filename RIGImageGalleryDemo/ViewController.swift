@@ -34,7 +34,7 @@ class ViewController: UIViewController {
 
     @IBAction func showGallery(sender: UIButton) {
         let photoViewController = RIGImageGalleryViewController()
-        self.rigController = photoViewController
+        rigController = photoViewController
         photoViewController.photoViewDelegate = self
         loadImages()
         let navigationController = navBarWrappedViewController(photoViewController)
@@ -60,6 +60,13 @@ extension ViewController: RIGPhotoViewControllerDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    func actionForGalleryItem(galleryItem: RIGImageGalleryItem) {
+    }
+
+    func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool {
+        return !traitCollection.containsTraitsInCollection(UITraitCollection(verticalSizeClass: .Compact))
+    }
+
     func loadImages() {
         let reqs: [URLRequestConvertible] = urls.map { url in
             NSURLRequest(URL: url)
@@ -69,6 +76,7 @@ extension ViewController: RIGPhotoViewControllerDelegate {
         }
         let img = UIImage(named: "placeholder")
         rig.images = Array<RIGImageGalleryItem>.init(count: reqs.count, repeatedValue: RIGImageGalleryItem(placeholderImage: img))
+        rig.setCurrentImage(1, animated: false)
         let downloader = ImageDownloader.defaultInstance
         downloader.downloadImages(URLRequests: reqs, filter: nil) { response in
             guard let request = response.request, let image = response.result.value else {
@@ -79,7 +87,7 @@ extension ViewController: RIGPhotoViewControllerDelegate {
             }
             if let matchIndex = index {
                 let update = rig.images[matchIndex].updateImage(image)
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(5.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
                 rig.images[matchIndex] = update
                 }
             }

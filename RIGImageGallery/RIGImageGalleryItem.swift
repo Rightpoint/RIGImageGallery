@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct RIGImageGalleryItem {
+public class RIGImageGalleryItem: NSObject {
 
     public let image: UIImage?
     public let placeholderImage: UIImage?

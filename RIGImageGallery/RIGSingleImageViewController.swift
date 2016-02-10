@@ -16,7 +16,7 @@ internal class RIGSingleImageViewController: UIViewController {
         didSet {
             if viewerItem?.image != nil {
                 scrollView.allowZoom = true
-                self.scrollView.zoomImage = self.viewerItem?.image
+                scrollView.zoomImage = viewerItem?.image
             }
             else {
                 scrollView.allowZoom = false
@@ -25,16 +25,9 @@ internal class RIGSingleImageViewController: UIViewController {
         }
     }
 
-    var doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil) {
-        didSet {
-            configureDoneButton()
-        }
-    }
-
     internal let scrollView = RIGAutoCenteringScrollView()
 
     override func loadView() {
-        configureDoneButton()
         automaticallyAdjustsScrollViewInsets = false
         view = scrollView
         view.backgroundColor = .blackColor()
@@ -43,29 +36,11 @@ internal class RIGSingleImageViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.leftBarButtonItem = doneButton
     }
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
-    }
-
-}
-
-extension RIGSingleImageViewController {
-
-    func dismissPhotoView(sender: UINavigationItem) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-
-}
-
-private extension RIGSingleImageViewController {
-
-    func configureDoneButton() {
-        doneButton.target = self
-        doneButton.action = "dismissPhotoView:"
     }
 
 }

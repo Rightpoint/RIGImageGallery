@@ -12,22 +12,28 @@ public typealias RIGImageViewConstructor = () -> UIImageView
 public typealias RIGImageURLLoader = (imageView: UIImageView, url: NSURL) -> Void
 public typealias RIGImageLoaderCleanup = (imageView: UIImageView) -> Void
 
-public protocol RIGPhotoViewControllerDelegate {
+@objc public protocol RIGPhotoViewControllerDelegate {
 
     func dismissPhotoViewer()
+    optional func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool
+    optional func actionForGalleryItem(galleryItem: RIGImageGalleryItem)
+    optional func handleGalleryIndexUpdate(newIndex: Int)
 
 }
 
 public class RIGImageGalleryViewController: UIPageViewController {
 
     private var navigationBarsHidden: Bool = false
-
     private var zoomRecognizer = UITapGestureRecognizer()
     private var toggleBarRecognizer = UITapGestureRecognizer()
-
     private var currentImageViewController: RIGSingleImageViewController?
 
-    public var photoViewDelegate: RIGPhotoViewControllerDelegate?
+    public var photoViewDelegate: RIGPhotoViewControllerDelegate? {
+        didSet {
+            configureActionButton()
+        }
+    }
+
     public var placeholder: UIImage? = nil
     public var images: [RIGImageGalleryItem] = [] {
         didSet {
@@ -38,6 +44,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
                         indexedView.scrollView.baseInsets = scrollViewInset
                 }
             }
+            updateCountText()
         }
     }
 
@@ -47,10 +54,22 @@ public class RIGImageGalleryViewController: UIPageViewController {
         }
     }
 
-    public private(set) var currentImage: Int = 0
+    public var actionButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: nil, action: nil) {
+        didSet {
+            configureActionButton()
+        }
+    }
+
+    public private(set) var currentImage: Int = 0 {
+        didSet {
+            photoViewDelegate?.handleGalleryIndexUpdate?(currentImage)
+            updateCountText()
+        }
+    }
 
     public func setCurrentImage(currentImage: Int, animated: Bool) {
         let newView = rigImageViewWithImage(images[currentImage])
+        newView.viewIndex = currentImage
         let direction: UIPageViewControllerNavigationDirection
         if self.currentImage < currentImage {
             direction = .Forward
@@ -60,8 +79,14 @@ public class RIGImageGalleryViewController: UIPageViewController {
         }
         self.currentImage = currentImage
         setViewControllers([newView], direction: direction, animated: animated, completion: nil)
-
     }
+
+    public let countLabel: UILabel = {
+        let counter = UILabel()
+        counter.textColor = .whiteColor()
+        counter.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        return counter
+    }()
 
     public init() {
         super.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
@@ -70,7 +95,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
         automaticallyAdjustsScrollViewInsets = false
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -83,8 +108,15 @@ public class RIGImageGalleryViewController: UIPageViewController {
         toggleBarRecognizer.delegate = self
         view.addGestureRecognizer(zoomRecognizer)
         view.addGestureRecognizer(toggleBarRecognizer)
-        navigationItem.leftBarButtonItem = doneButton
         view.backgroundColor = UIColor.blackColor()
+
+        countLabel.sizeToFit()
+
+        toolbarItems = [
+            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(customView: countLabel),
+            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
+        ]
     }
 
     public override func viewWillAppear(animated: Bool) {
@@ -92,6 +124,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
         updateBarStatus(animated: false)
         if currentImage < images.count {
             let photoPage = rigImageViewWithImage(images[currentImage])
+            photoPage.viewIndex = currentImage
             currentImageViewController = photoPage
             setViewControllers([photoPage], direction: .Forward, animated: false, completion: nil)
         }
@@ -101,9 +134,14 @@ public class RIGImageGalleryViewController: UIPageViewController {
         return navigationBarsHidden
     }
 
-    override public func viewWillLayoutSubviews() {
+    public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         currentImageViewController?.scrollView.baseInsets = scrollViewInset
+    }
+
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        configureDoneButton()
     }
 
 }
@@ -154,6 +192,12 @@ internal extension RIGImageGalleryViewController {
         }
         else {
             dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+
+    func performAction(sender: UIBarButtonItem) {
+        if let item = currentImageViewController?.viewerItem {
+            photoViewDelegate?.actionForGalleryItem?(item)
         }
     }
 
@@ -209,31 +253,24 @@ private extension RIGImageGalleryViewController {
     func configureDoneButton() {
         doneButton.target = self
         doneButton.action = "dismissPhotoView:"
+        if photoViewDelegate?.showDismissForTraitCollection?(traitCollection) ?? true {
+            navigationItem.leftBarButtonItem = doneButton
+        }
+        else {
+            navigationItem.leftBarButtonItem = nil
+        }
     }
-    
-//    func indexOfCurrentViewer() -> Int? {
-//        guard currentImage < viewControllers?.count ?? 0 else {
-//            return nil
-//        }
-//        return indexOfPhotoViewer(viewControllers?[currentImage] as? RIGSingleImageViewController)
-//    }
 
-//    func indexOfPhotoViewer(photoViewer: RIGSingleImageViewController?) -> Int? {
-//        guard let viewer = photoViewer else {
-//            return nil
-//        }
-//        return indexOfItem(viewer.viewerItem)
-//    }
-
-//    func indexOfItem(item: RIGImageGalleryItem?) -> Int? {
-//        guard let item = item else {
-//            return nil
-//        }
-//        let index = images.indexOf { img in
-//            return img == item
-//        }
-//        return index
-//    }
+    func configureActionButton() {
+        actionButton.target = self
+        actionButton.action = "performAction:"
+        if photoViewDelegate?.actionForGalleryItem != nil {
+            navigationItem.rightBarButtonItem = actionButton
+        }
+        else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
 
     private func rigImageViewWithImage(image: RIGImageGalleryItem) -> RIGSingleImageViewController {
         let imageView = RIGSingleImageViewController()
@@ -246,4 +283,8 @@ private extension RIGImageGalleryViewController {
         return UIEdgeInsets(top: topLayoutGuide.length, left: 0, bottom: bottomLayoutGuide.length, right: 0)
     }
 
+    private func updateCountText() {
+        countLabel.text = "\(currentImage.successor()) of \(images.count)"
+        countLabel.sizeToFit()
+    }
 }
