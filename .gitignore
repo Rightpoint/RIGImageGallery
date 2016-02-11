@@ -2,6 +2,7 @@
 build/
 DerivedData
 /Carthage/build
+Carthage/Checkouts/**/Build
 
 ## Various settings
 *.pbxuser
