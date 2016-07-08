@@ -11,9 +11,43 @@ import RIGImageGallery
 
 class ViewController: UIViewController {
 
-    let imageSession = NSURLSession(configuration: .defaultSessionConfiguration())
+    private let imageSession = NSURLSession(configuration: .defaultSessionConfiguration())
 
-    @IBAction func showGallery(sender: UIButton) {
+    override func loadView() {
+        view = UIView()
+        view.backgroundColor = .whiteColor()
+        navigationItem.title = NSLocalizedString("RIG Image Gallery", comment: "Main screen title")
+
+        let galleryButton = UIButton(type: .System)
+        galleryButton.translatesAutoresizingMaskIntoConstraints = false
+        galleryButton.addTarget(self, action: #selector(ViewController.showGallery(_:)), forControlEvents: .TouchUpInside)
+        galleryButton.setTitle(NSLocalizedString("Show Gallery", comment: "Show gallery button title"), forState: .Normal)
+
+        let stackView = UIStackView(arrangedSubviews: [galleryButton])
+        stackView.alignment = .Center
+        stackView.axis = .Vertical
+        stackView.layoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        stackView.distribution = .Fill
+        stackView.spacing = 10
+        view.addSubview(stackView)
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let constraints: [NSLayoutConstraint] = [
+            stackView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor),
+            stackView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor),
+            stackView.bottomAnchor.constraintLessThanOrEqualToAnchor(bottomLayoutGuide.topAnchor),
+            stackView.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor),
+        ]
+
+        NSLayoutConstraint.activateConstraints(constraints)
+    }
+
+}
+
+private extension ViewController {
+
+    @objc func showGallery(sender: UIButton) {
         let photoViewController = RIGImageGalleryViewController()
         photoViewController.photoViewDelegate = self
         loadImages(photoViewController)
@@ -21,17 +55,6 @@ class ViewController: UIViewController {
         presentViewController(navigationController, animated: true, completion: nil)
     }
 
-    @IBAction func showSingle(sender: UIButton) {
-    }
-
-    private func navBarWrappedViewController(viewController: UIViewController) -> UINavigationController {
-        let navigationController = UINavigationController(rootViewController: viewController)
-        navigationController.navigationBar.barStyle = .BlackTranslucent
-        navigationController.navigationBar.tintColor = .whiteColor()
-        navigationController.toolbar.barStyle = .BlackTranslucent
-        navigationController.toolbar.tintColor = .whiteColor()
-        return navigationController
-    }
 }
 
 extension ViewController: RIGPhotoViewControllerDelegate {
@@ -74,6 +97,16 @@ private extension ViewController {
         imagesAndRequests.forEach({ $0.task.resume() })
         rigController.setCurrentImage(1, animated: false)
     }
+
+    func navBarWrappedViewController(viewController: UIViewController) -> UINavigationController {
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.navigationBar.barStyle = .BlackTranslucent
+        navigationController.navigationBar.tintColor = .whiteColor()
+        navigationController.toolbar.barStyle = .BlackTranslucent
+        navigationController.toolbar.tintColor = .whiteColor()
+        return navigationController
+    }
+
 }
 
 private extension RIGImageGalleryViewController {
