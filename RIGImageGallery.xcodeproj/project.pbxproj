@@ -115,7 +115,7 @@
 			children = (
 				72060F541D2FFA6C001281E0 /* Info.plist */,
 			);
-			name = Assets;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		72A827EF1C68F17900B25CEE = {
@@ -141,9 +141,9 @@
 		72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */ = {
 			isa = PBXGroup;
 			children = (
+				72E3A5B91D2FE4D600E9C023 /* App Delegate */,
 				72E3A5BB1D2FE4EC00E9C023 /* Assets */,
 				72E3A5BA1D2FE4E300E9C023 /* View Controller */,
-				72E3A5B91D2FE4D600E9C023 /* App Delegate */,
 			);
 			path = RIGImageGalleryDemo;
 			sourceTree = "<group>";
@@ -165,7 +165,7 @@
 			children = (
 				72A8280B1C68F24500B25CEE /* AppDelegate.swift */,
 			);
-			name = "App Delegate";
+			path = "App Delegate";
 			sourceTree = "<group>";
 		};
 		72E3A5BA1D2FE4E300E9C023 /* View Controller */ = {
@@ -173,18 +173,18 @@
 			children = (
 				72A8280D1C68F24500B25CEE /* ViewController.swift */,
 			);
-			name = "View Controller";
+			path = "View Controller";
 			sourceTree = "<group>";
 		};
 		72E3A5BB1D2FE4EC00E9C023 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				72A8280F1C68F24500B25CEE /* Main.storyboard */,
 				72A828121C68F24500B25CEE /* Assets.xcassets */,
-				72A828141C68F24500B25CEE /* LaunchScreen.storyboard */,
 				72A828171C68F24500B25CEE /* Info.plist */,
+				72A828141C68F24500B25CEE /* LaunchScreen.storyboard */,
+				72A8280F1C68F24500B25CEE /* Main.storyboard */,
 			);
-			name = Assets;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		72E3A5BF1D2FE52100E9C023 /* Assets */ = {
@@ -193,7 +193,7 @@
 				72BA26561C6B985900F1FE22 /* Info.plist */,
 				72BA26541C6B985900F1FE22 /* RIGImageGallery.h */,
 			);
-			name = Assets;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -386,6 +386,7 @@
 				72A828101C68F24500B25CEE /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		72A828141C68F24500B25CEE /* LaunchScreen.storyboard */ = {
@@ -394,6 +395,7 @@
 				72A828151C68F24500B25CEE /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -403,7 +405,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				INFOPLIST_FILE = RIGImageGalleryTests/Info.plist;
+				INFOPLIST_FILE = RIGImageGalleryTests/Assets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGalleryTests;
@@ -415,7 +417,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				INFOPLIST_FILE = RIGImageGalleryTests/Info.plist;
+				INFOPLIST_FILE = RIGImageGalleryTests/Assets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGalleryTests;
@@ -520,7 +522,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Assets/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -536,7 +538,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Assets/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -554,7 +556,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = RIGImageGallery/Info.plist;
+				INFOPLIST_FILE = RIGImageGallery/Assets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGallery;
@@ -574,7 +576,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = RIGImageGallery/Info.plist;
+				INFOPLIST_FILE = RIGImageGallery/Assets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGallery;
@@ -593,6 +595,7 @@
 				72060F5A1D2FFA6C001281E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		72A827F31C68F17900B25CEE /* Build configuration list for PBXProject "RIGImageGallery" */ = {
 			isa = XCConfigurationList;
