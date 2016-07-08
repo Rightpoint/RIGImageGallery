@@ -97,10 +97,10 @@ public class RIGImageGalleryViewController: UIPageViewController {
 
     public override func viewDidLoad() {
         configureDoneButton()
-        zoomRecognizer.addTarget(self, action: "toggleZoom:")
+        zoomRecognizer.addTarget(self, action: #selector(RIGImageGalleryViewController.toggleZoom(_:)))
         zoomRecognizer.numberOfTapsRequired = 2
         zoomRecognizer.delegate = self
-        toggleBarRecognizer.addTarget(self, action: "toggleBarVisiblity:")
+        toggleBarRecognizer.addTarget(self, action: #selector(RIGImageGalleryViewController.toggleBarVisiblity(_:)))
         toggleBarRecognizer.delegate = self
         view.addGestureRecognizer(zoomRecognizer)
         view.addGestureRecognizer(toggleBarRecognizer)
@@ -248,7 +248,7 @@ private extension RIGImageGalleryViewController {
 
     func configureDoneButton() {
         doneButton.target = self
-        doneButton.action = "dismissPhotoView:"
+        doneButton.action = #selector(RIGImageGalleryViewController.dismissPhotoView(_:))
         if photoViewDelegate?.showDismissForTraitCollection?(traitCollection) ?? true {
             navigationItem.leftBarButtonItem = doneButton
         }
@@ -259,7 +259,7 @@ private extension RIGImageGalleryViewController {
 
     func configureActionButton() {
         actionButton.target = self
-        actionButton.action = "performAction:"
+        actionButton.action = #selector(RIGImageGalleryViewController.performAction(_:))
         if photoViewDelegate?.actionForGalleryItem != nil {
             navigationItem.rightBarButtonItem = actionButton
         }

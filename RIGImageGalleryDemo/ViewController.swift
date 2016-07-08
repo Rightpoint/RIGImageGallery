@@ -8,12 +8,10 @@
 
 import UIKit
 import RIGImageGallery
-import Alamofire
-import AlamofireImage
 
 class ViewController: UIViewController {
 
-    var rigController: RIGImageGalleryViewController?
+    let imageSession = NSURLSession(configuration: .defaultSessionConfiguration())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,9 +32,8 @@ class ViewController: UIViewController {
 
     @IBAction func showGallery(sender: UIButton) {
         let photoViewController = RIGImageGalleryViewController()
-        rigController = photoViewController
         photoViewController.photoViewDelegate = self
-        loadImages()
+        loadImages(photoViewController)
         let navigationController = navBarWrappedViewController(photoViewController)
         presentViewController(navigationController, animated: true, completion: nil)
     }
@@ -67,31 +64,30 @@ extension ViewController: RIGPhotoViewControllerDelegate {
         return !traitCollection.containsTraitsInCollection(UITraitCollection(verticalSizeClass: .Compact))
     }
 
-    func loadImages() {
-        let reqs: [URLRequestConvertible] = urls.map { url in
-            NSURLRequest(URL: url)
-        }
-        guard let rig = rigController else {
-            return
-        }
-        let img = UIImage(named: "placeholder")
-        rig.images = Array<RIGImageGalleryItem>.init(count: reqs.count, repeatedValue: RIGImageGalleryItem(placeholderImage: img))
-        rig.setCurrentImage(1, animated: false)
-        let downloader = ImageDownloader.defaultInstance
-        downloader.downloadImages(URLRequests: reqs, filter: nil) { response in
-            guard let request = response.request, let image = response.result.value else {
+    static func parseImage(gallery gallery: RIGImageGalleryViewController, index: Int) -> ((NSData?, NSURLResponse?, NSError?) -> ()) {
+        return { (data: NSData?, response: NSURLResponse?, error: NSError?) in
+            guard let image = data.flatMap(UIImage.init) where error == nil else {
+                print(error)
                 return
             }
-            let index = reqs.indexOf { req in
-                request == req as? NSURLRequest
-            }
-            if let matchIndex = index {
-                let update = rig.images[matchIndex].updateImage(image)
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                rig.images[matchIndex] = update
-                }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+                gallery.images[index] = gallery.images[index].updateImage(image)
             }
         }
     }
-}
 
+    func loadImages(rigController: RIGImageGalleryViewController) {
+        let requests = urls.map { url in
+            NSURLRequest(URL: url)
+        }
+        let placeHolder = UIImage(named: "placeholder")
+        rigController.images = Array<RIGImageGalleryItem>.init(count: requests.count, repeatedValue: RIGImageGalleryItem(placeholderImage: placeHolder))
+
+        rigController.images = requests.enumerate().map { (index, request) in
+            let emptyItem = RIGImageGalleryItem(placeholderImage: placeHolder)
+            imageSession.dataTaskWithRequest(request, completionHandler: self.dynamicType.parseImage(gallery: rigController, index: index)).resume()
+            return emptyItem
+        }
+        rigController.setCurrentImage(1, animated: false)
+    }
+}
