@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72060F531D2FFA6C001281E0 /* RIGImageGalleryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72060F521D2FFA6C001281E0 /* RIGImageGalleryTests.swift */; };
+		72060F551D2FFA6C001281E0 /* RIGImageGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */; };
 		72A8280C1C68F24500B25CEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8280B1C68F24500B25CEE /* AppDelegate.swift */; };
 		72A8280E1C68F24500B25CEE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8280D1C68F24500B25CEE /* ViewController.swift */; };
 		72A828111C68F24500B25CEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72A8280F1C68F24500B25CEE /* Main.storyboard */; };
@@ -22,6 +24,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		72060F561D2FFA6C001281E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 72A827F01C68F17900B25CEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 72BA26511C6B985900F1FE22;
+			remoteInfo = RIGImageGallery;
+		};
 		72BA26571C6B985900F1FE22 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 72A827F01C68F17900B25CEE /* Project object */;
@@ -46,6 +55,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		72060F501D2FFA6C001281E0 /* RIGImageGalleryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RIGImageGalleryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		72060F521D2FFA6C001281E0 /* RIGImageGalleryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIGImageGalleryTests.swift; sourceTree = "<group>"; };
+		72060F541D2FFA6C001281E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RIGImageGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72A8280B1C68F24500B25CEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72A8280D1C68F24500B25CEE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +75,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		72060F4D1D2FFA6C001281E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72060F551D2FFA6C001281E0 /* RIGImageGallery.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72A828061C68F24500B25CEE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -81,12 +101,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		72060F511D2FFA6C001281E0 /* RIGImageGalleryTests */ = {
+			isa = PBXGroup;
+			children = (
+				72060F5B1D2FFA9C001281E0 /* Assets */,
+				72060F521D2FFA6C001281E0 /* RIGImageGalleryTests.swift */,
+			);
+			path = RIGImageGalleryTests;
+			sourceTree = "<group>";
+		};
+		72060F5B1D2FFA9C001281E0 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				72060F541D2FFA6C001281E0 /* Info.plist */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
 		72A827EF1C68F17900B25CEE = {
 			isa = PBXGroup;
 			children = (
 				72A827FA1C68F17900B25CEE /* Products */,
 				72BA26531C6B985900F1FE22 /* RIGImageGallery */,
 				72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */,
+				72060F511D2FFA6C001281E0 /* RIGImageGalleryTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,6 +133,7 @@
 			children = (
 				72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */,
 				72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */,
+				72060F501D2FFA6C001281E0 /* RIGImageGalleryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,6 +210,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		72060F4F1D2FFA6C001281E0 /* RIGImageGalleryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 72060F581D2FFA6C001281E0 /* Build configuration list for PBXNativeTarget "RIGImageGalleryTests" */;
+			buildPhases = (
+				72060F4C1D2FFA6C001281E0 /* Sources */,
+				72060F4D1D2FFA6C001281E0 /* Frameworks */,
+				72060F4E1D2FFA6C001281E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				72060F571D2FFA6C001281E0 /* PBXTargetDependency */,
+			);
+			name = RIGImageGalleryTests;
+			productName = RIGImageGalleryTests;
+			productReference = 72060F501D2FFA6C001281E0 /* RIGImageGalleryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		72A828081C68F24500B25CEE /* RIGImageGalleryDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 72A828181C68F24500B25CEE /* Build configuration list for PBXNativeTarget "RIGImageGalleryDemo" */;
@@ -214,10 +271,13 @@
 		72A827F01C68F17900B25CEE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Raizlabs;
 				TargetAttributes = {
+					72060F4F1D2FFA6C001281E0 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					72A828081C68F24500B25CEE = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 336S848KQ4;
@@ -243,11 +303,19 @@
 			targets = (
 				72A828081C68F24500B25CEE /* RIGImageGalleryDemo */,
 				72BA26511C6B985900F1FE22 /* RIGImageGallery */,
+				72060F4F1D2FFA6C001281E0 /* RIGImageGalleryTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		72060F4E1D2FFA6C001281E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72A828071C68F24500B25CEE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,6 +336,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		72060F4C1D2FFA6C001281E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72060F531D2FFA6C001281E0 /* RIGImageGalleryTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72A828051C68F24500B25CEE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -291,6 +367,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		72060F571D2FFA6C001281E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 72BA26511C6B985900F1FE22 /* RIGImageGallery */;
+			targetProxy = 72060F561D2FFA6C001281E0 /* PBXContainerItemProxy */;
+		};
 		72BA26581C6B985900F1FE22 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 72BA26511C6B985900F1FE22 /* RIGImageGallery */;
@@ -318,6 +399,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		72060F591D2FFA6C001281E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = RIGImageGalleryTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGalleryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		72060F5A1D2FFA6C001281E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = RIGImageGalleryTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGalleryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		72A827FF1C68F17900B25CEE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -481,6 +586,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		72060F581D2FFA6C001281E0 /* Build configuration list for PBXNativeTarget "RIGImageGalleryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72060F591D2FFA6C001281E0 /* Debug */,
+				72060F5A1D2FFA6C001281E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		72A827F31C68F17900B25CEE /* Build configuration list for PBXProject "RIGImageGallery" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
