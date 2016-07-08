@@ -13,23 +13,6 @@ class ViewController: UIViewController {
 
     let imageSession = NSURLSession(configuration: .defaultSessionConfiguration())
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    let urls: [NSURL] = [
-        NSURL(string: "https://placehold.it/1920x1080"),
-        NSURL(string: "https://placehold.it/1080x1920"),
-        NSURL(string: "https://placehold.it/350x150"),
-        NSURL(string: "https://placehold.it/150x350"),
-        ].flatMap { $0 }
-
     @IBAction func showGallery(sender: UIButton) {
         let photoViewController = RIGImageGalleryViewController()
         photoViewController.photoViewDelegate = self
@@ -61,33 +44,50 @@ extension ViewController: RIGPhotoViewControllerDelegate {
     }
 
     func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool {
-        return !traitCollection.containsTraitsInCollection(UITraitCollection(verticalSizeClass: .Compact))
+        let isPhone = UITraitCollection(userInterfaceIdiom: .Phone)
+        let isCompact = UITraitCollection(verticalSizeClass: .Compact)
+        let allTraits = UITraitCollection(traitsFromCollections: [isPhone, isCompact])
+        return !traitCollection.containsTraitsInCollection(allTraits)
     }
 
-    static func parseImage(gallery gallery: RIGImageGalleryViewController, index: Int) -> ((NSData?, NSURLResponse?, NSError?) -> ()) {
-        return { (data: NSData?, response: NSURLResponse?, error: NSError?) in
+}
+
+private extension ViewController {
+
+    static let urls: [NSURL] = [
+        NSURL(string: "https://placehold.it/1920x1080"),
+        NSURL(string: "https://placehold.it/1080x1920"),
+        NSURL(string: "https://placehold.it/350x150"),
+        NSURL(string: "https://placehold.it/150x350"),
+        ].flatMap { $0 }
+
+    func loadImages(rigController: RIGImageGalleryViewController) {
+        let emptyItem = RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder"))
+
+        let imagesAndRequests: [(image: RIGImageGalleryItem, task: NSURLSessionTask)] = self.dynamicType.urls.enumerate().map { (index, URL) in
+            let completion = rigController.handleImageLoadAtIndex(index)
+            let request = imageSession.dataTaskWithRequest(NSURLRequest(URL: URL), completionHandler: completion)
+            return (image: emptyItem, task: request)
+        }
+
+        rigController.images = imagesAndRequests.map({ $0.image })
+        imagesAndRequests.forEach({ $0.task.resume() })
+        rigController.setCurrentImage(1, animated: false)
+    }
+}
+
+private extension RIGImageGalleryViewController {
+    func handleImageLoadAtIndex(index: Int) -> ((NSData?, NSURLResponse?, NSError?) -> ()) {
+        return { [weak self] (data: NSData?, response: NSURLResponse?, error: NSError?) in
             guard let image = data.flatMap(UIImage.init) where error == nil else {
                 print(error)
                 return
             }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                gallery.images[index] = gallery.images[index].updateImage(image)
+                if let currentImage = self?.images[index] {
+                    self?.images[index] = currentImage.updateImage(image)
+                }
             }
         }
-    }
-
-    func loadImages(rigController: RIGImageGalleryViewController) {
-        let requests = urls.map { url in
-            NSURLRequest(URL: url)
-        }
-        let placeHolder = UIImage(named: "placeholder")
-        rigController.images = Array<RIGImageGalleryItem>.init(count: requests.count, repeatedValue: RIGImageGalleryItem(placeholderImage: placeHolder))
-
-        rigController.images = requests.enumerate().map { (index, request) in
-            let emptyItem = RIGImageGalleryItem(placeholderImage: placeHolder)
-            imageSession.dataTaskWithRequest(request, completionHandler: self.dynamicType.parseImage(gallery: rigController, index: index)).resume()
-            return emptyItem
-        }
-        rigController.setCurrentImage(1, animated: false)
     }
 }
