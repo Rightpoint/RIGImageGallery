@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		72060F531D2FFA6C001281E0 /* RIGImageGalleryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72060F521D2FFA6C001281E0 /* RIGImageGalleryTests.swift */; };
+		72060F531D2FFA6C001281E0 /* RIGImageGalleryTestAutoCenteringScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72060F521D2FFA6C001281E0 /* RIGImageGalleryTestAutoCenteringScrollView.swift */; };
 		72060F551D2FFA6C001281E0 /* RIGImageGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */; };
 		72A8280C1C68F24500B25CEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8280B1C68F24500B25CEE /* AppDelegate.swift */; };
 		72A8280E1C68F24500B25CEE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8280D1C68F24500B25CEE /* ViewController.swift */; };
@@ -55,7 +55,7 @@
 
 /* Begin PBXFileReference section */
 		72060F501D2FFA6C001281E0 /* RIGImageGalleryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RIGImageGalleryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		72060F521D2FFA6C001281E0 /* RIGImageGalleryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIGImageGalleryTests.swift; sourceTree = "<group>"; };
+		72060F521D2FFA6C001281E0 /* RIGImageGalleryTestAutoCenteringScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIGImageGalleryTestAutoCenteringScrollView.swift; sourceTree = "<group>"; };
 		72060F541D2FFA6C001281E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RIGImageGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72A8280B1C68F24500B25CEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				72060F5B1D2FFA9C001281E0 /* Assets */,
-				72060F521D2FFA6C001281E0 /* RIGImageGalleryTests.swift */,
+				72060F521D2FFA6C001281E0 /* RIGImageGalleryTestAutoCenteringScrollView.swift */,
 			);
 			path = RIGImageGalleryTests;
 			sourceTree = "<group>";
@@ -336,7 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72060F531D2FFA6C001281E0 /* RIGImageGalleryTests.swift in Sources */,
+				72060F531D2FFA6C001281E0 /* RIGImageGalleryTestAutoCenteringScrollView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
