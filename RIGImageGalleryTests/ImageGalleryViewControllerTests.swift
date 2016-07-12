@@ -50,17 +50,23 @@ class ImageGalleryViewControllerTests: XCTestCase {
     func testDelegateAndBarButtons() {
         let completeDelegate = CompletePhotoViewControllerDelegate()
         imageGallery.photoViewDelegate = completeDelegate
+        XCTAssertTrue(imageGallery.navigationItem.leftBarButtonItem?.enabled ?? false)
+        imageGallery.doneButton = UIBarButtonItem()
+        XCTAssertTrue(imageGallery.navigationItem.leftBarButtonItem?.enabled ?? false)
         let incompleteDelegate = IncompletePhotoViewControllerDelegate()
         imageGallery.photoViewDelegate = incompleteDelegate
         let noDismissDelegate = NoDismissPhotoViewControllerDelegate()
         imageGallery.photoViewDelegate = noDismissDelegate
-
-        imageGallery.doneButton = UIBarButtonItem()
-        imageGallery.actionButton = UIBarButtonItem()
+        XCTAssertFalse(imageGallery.navigationItem.leftBarButtonItem?.enabled ?? false)
 
         imageGallery.actionForGalleryItem = { _ in }
-
+        XCTAssertTrue(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
+        imageGallery.actionButton = UIBarButtonItem()
+        XCTAssertTrue(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
         imageGallery.actionForGalleryItem = nil
+        XCTAssertFalse(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
+        imageGallery.actionButton = UIBarButtonItem()
+        XCTAssertFalse(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
     }
 
     func testStatusBarHidden() {
