@@ -8,15 +8,11 @@
 
 import UIKit
 
-public class RIGImageGalleryItem: NSObject {
+public struct RIGImageGalleryItem: Equatable {
 
-    public let image: UIImage?
-    public let placeholderImage: UIImage?
-    public let title: String?
-
-    public func updateImage(image: UIImage?) -> RIGImageGalleryItem {
-        return RIGImageGalleryItem(image: image, placeholderImage: placeholderImage, title: title)
-    }
+    public var image: UIImage?
+    public var placeholderImage: UIImage?
+    public var title: String?
 
     public init(image: UIImage? = nil, placeholderImage: UIImage? = nil, title: String? = nil) {
         self.image = image
@@ -24,4 +20,8 @@ public class RIGImageGalleryItem: NSObject {
         self.title = title
     }
 
+}
+
+public func == (lhs: RIGImageGalleryItem, rhs: RIGImageGalleryItem) -> Bool {
+    return lhs.image === rhs.image && lhs.placeholderImage === rhs.placeholderImage && lhs.title == rhs.title
 }

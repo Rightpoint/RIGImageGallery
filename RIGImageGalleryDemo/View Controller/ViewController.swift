@@ -85,17 +85,16 @@ private extension ViewController {
         ].flatMap { $0 }
 
     func loadImages(rigController: RIGImageGalleryViewController) {
-        let emptyItem = RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder"))
 
-        let imagesAndRequests: [(image: RIGImageGalleryItem, task: NSURLSessionTask)] = self.dynamicType.urls.enumerate().map { (index, URL) in
+        let imagesAndRequests: [(image: UIImage, task: NSURLSessionTask)] = self.dynamicType.urls.enumerate().map { (index, URL) in
             let completion = rigController.handleImageLoadAtIndex(index)
             let request = imageSession.dataTaskWithRequest(NSURLRequest(URL: URL), completionHandler: completion)
-            return (image: emptyItem, task: request)
+            return (image: UIImage(named: "placeholder") ?? UIImage(), task: request)
         }
 
-        rigController.images = imagesAndRequests.map({ $0.image })
+        rigController.images = imagesAndRequests.map({ RIGImageGalleryItem(placeholderImage: $0.image) })
         imagesAndRequests.forEach({ $0.task.resume() })
-        rigController.setCurrentImage(1, animated: false)
+        rigController.setCurrentImage(2, animated: false)
     }
 
     func navBarWrappedViewController(viewController: UIViewController) -> UINavigationController {
@@ -117,9 +116,7 @@ private extension RIGImageGalleryViewController {
                 return
             }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                if let currentImage = self?.images[index] {
-                    self?.images[index] = currentImage.updateImage(image)
-                }
+                self?.images[index].image = image
             }
         }
     }

@@ -12,35 +12,27 @@ import UIKit
 
     func dismissPhotoViewer()
     optional func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool
-    optional func actionForGalleryItem(galleryItem: RIGImageGalleryItem)
     optional func handleGalleryIndexUpdate(newIndex: Int)
 
 }
 
 public class RIGImageGalleryViewController: UIPageViewController {
 
-    private var navigationBarsHidden: Bool = false
-    private var zoomRecognizer = UITapGestureRecognizer()
-    private var toggleBarRecognizer = UITapGestureRecognizer()
-    private var currentImageViewController: RIGSingleImageViewController?
-
     public var photoViewDelegate: RIGPhotoViewControllerDelegate? {
+        didSet {
+            configureDoneButton()
+        }
+    }
+
+    public var actionForGalleryItem: (RIGImageGalleryItem -> ())? {
         didSet {
             configureActionButton()
         }
     }
 
-    public var placeholder: UIImage? = nil
     public var images: [RIGImageGalleryItem] = [] {
         didSet {
-            for childView in childViewControllers {
-                if let indexedView = childView as? RIGSingleImageViewController
-                    where indexedView.viewIndex < images.count {
-                        indexedView.viewerItem = images[indexedView.viewIndex]
-                        indexedView.scrollView.baseInsets = scrollViewInset
-                }
-            }
-            updateCountText()
+            handleImagesUpdate(oldValue: oldValue)
         }
     }
 
@@ -63,9 +55,18 @@ public class RIGImageGalleryViewController: UIPageViewController {
         }
     }
 
+    private var navigationBarsHidden: Bool = false
+    private var zoomRecognizer = UITapGestureRecognizer()
+    private var toggleBarRecognizer = UITapGestureRecognizer()
+    private var currentImageViewController: RIGSingleImageViewController?
+
     public func setCurrentImage(currentImage: Int, animated: Bool) {
-        let newView = rigImageViewWithImage(images[currentImage])
-        newView.viewIndex = currentImage
+        guard currentImage >= 0 && currentImage < images.count else {
+            self.currentImage = 0
+            setViewControllers([UIViewController()], direction: .Forward, animated: animated, completion: nil)
+            return
+        }
+        let newView = RIGSingleImageViewController(viewerItem: images[currentImage])
         let direction: UIPageViewControllerNavigationDirection
         if self.currentImage < currentImage {
             direction = .Forward
@@ -84,15 +85,11 @@ public class RIGImageGalleryViewController: UIPageViewController {
         return counter
     }()
 
-    public init() {
-        super.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
+    public convenience init() {
+        self.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
         dataSource = self
         delegate = self
         automaticallyAdjustsScrollViewInsets = false
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     public override func viewDidLoad() {
@@ -119,8 +116,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
         super.viewWillAppear(animated)
         updateBarStatus(animated: false)
         if currentImage < images.count {
-            let photoPage = rigImageViewWithImage(images[currentImage])
-            photoPage.viewIndex = currentImage
+            let photoPage =  RIGSingleImageViewController(viewerItem: images[currentImage])
             currentImageViewController = photoPage
             setViewControllers([photoPage], direction: .Forward, animated: false, completion: nil)
         }
@@ -173,15 +169,6 @@ extension RIGImageGalleryViewController {
         currentImageViewController?.scrollView.toggleZoom()
     }
 
-    func updateBarStatus(animated animated: Bool) {
-        navigationController?.setToolbarHidden(navigationBarsHidden, animated: animated)
-        navigationController?.setNavigationBarHidden(navigationBarsHidden, animated: animated)
-        setNeedsStatusBarAppearanceUpdate()
-        UIView.animateWithDuration(0.15) {
-            self.currentImageViewController?.scrollView.baseInsets = self.scrollViewInset
-        }
-    }
-
     func dismissPhotoView(sender: UIBarButtonItem) {
         if let pDelegate = photoViewDelegate {
             pDelegate.dismissPhotoViewer()
@@ -193,7 +180,7 @@ extension RIGImageGalleryViewController {
 
     func performAction(sender: UIBarButtonItem) {
         if let item = currentImageViewController?.viewerItem {
-            photoViewDelegate?.actionForGalleryItem?(item)
+            actionForGalleryItem?(item)
         }
     }
 
@@ -203,22 +190,20 @@ extension RIGImageGalleryViewController: UIPageViewControllerDataSource {
 
     public func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
 
-        guard let index = (viewController as? RIGSingleImageViewController)?.viewIndex.successor()
+        guard let index = indexOf(viewController: viewController)?.successor()
             where index < images.count else {
             return nil
         }
-        let zoomView = rigImageViewWithImage(images[index])
-        zoomView.viewIndex = index
+        let zoomView = RIGSingleImageViewController(viewerItem: images[index])
         return zoomView
     }
 
     public func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        guard let index = (viewController as? RIGSingleImageViewController)?.viewIndex.predecessor()
+        guard let index = indexOf(viewController: viewController)?.predecessor()
             where index >= 0 else {
                 return nil
         }
-        let zoomView = rigImageViewWithImage(images[index])
-        zoomView.viewIndex = index
+        let zoomView = RIGSingleImageViewController(viewerItem: images[index])
         return zoomView
     }
 
@@ -235,8 +220,7 @@ extension RIGImageGalleryViewController: UIPageViewControllerDelegate {
     }
 
     public func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        currentImageViewController = viewControllers?.first as? RIGSingleImageViewController
-        if let index = currentImageViewController?.viewIndex {
+        if let index = viewControllers?.first.flatMap({ self.indexOf(viewController: $0) }) {
             currentImage = index
         }
     }
@@ -245,6 +229,14 @@ extension RIGImageGalleryViewController: UIPageViewControllerDelegate {
 // MARK: - Private
 
 private extension RIGImageGalleryViewController {
+
+    func indexOf(viewController viewController: UIViewController, imagesArray: [RIGImageGalleryItem]? = nil) -> Int? {
+        guard let item = (viewController as? RIGSingleImageViewController)?.viewerItem else {
+            return nil
+        }
+        let index = (imagesArray ?? images).indexOf(item)
+        return index
+    }
 
     func configureDoneButton() {
         doneButton.target = self
@@ -260,7 +252,7 @@ private extension RIGImageGalleryViewController {
     func configureActionButton() {
         actionButton.target = self
         actionButton.action = #selector(RIGImageGalleryViewController.performAction(_:))
-        if photoViewDelegate?.actionForGalleryItem != nil {
+        if actionForGalleryItem != nil {
             navigationItem.rightBarButtonItem = actionButton
         }
         else {
@@ -268,10 +260,24 @@ private extension RIGImageGalleryViewController {
         }
     }
 
-    private func rigImageViewWithImage(image: RIGImageGalleryItem) -> RIGSingleImageViewController {
-        let imageView = RIGSingleImageViewController()
-        imageView.viewerItem = image
-        return imageView
+    func updateBarStatus(animated animated: Bool) {
+        navigationController?.setToolbarHidden(navigationBarsHidden, animated: animated)
+        navigationController?.setNavigationBarHidden(navigationBarsHidden, animated: animated)
+        setNeedsStatusBarAppearanceUpdate()
+        UIView.animateWithDuration(0.15) {
+            self.currentImageViewController?.scrollView.baseInsets = self.scrollViewInset
+        }
+    }
+
+    func handleImagesUpdate(oldValue oldValue: [RIGImageGalleryItem]) {
+        for viewController in childViewControllers {
+            if let index = indexOf(viewController: viewController, imagesArray: oldValue),
+                childView = viewController as? RIGSingleImageViewController where index < images.count {
+                childView.viewerItem = images[index]
+                childView.scrollView.baseInsets = scrollViewInset
+            }
+        }
+        updateCountText()
     }
 
     private var scrollViewInset: UIEdgeInsets {
@@ -283,4 +289,5 @@ private extension RIGImageGalleryViewController {
         countLabel.text = "\(currentImage.successor()) of \(images.count)"
         countLabel.sizeToFit()
     }
+
 }
