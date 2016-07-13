@@ -61,7 +61,7 @@ private extension ViewController {
 
 private extension ViewController {
 
-    func dismissPhotoViewer() {
+    func dismissPhotoViewer(_ :RIGImageGalleryViewController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
 

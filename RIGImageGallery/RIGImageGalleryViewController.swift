@@ -14,7 +14,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
     public var actionButtonHandler: (RIGImageGalleryItem -> ())?
 
     /// An optional closure to allow cutom trait collection change handling
-    public var traitCollectionChangeHandler: ((RIGImageGalleryViewController) -> ())? {
+    public var traitCollectionChangeHandler: (RIGImageGalleryViewController -> ())? {
         didSet {
             traitCollectionChangeHandler?(self)
         }
@@ -24,7 +24,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
     public var indexUpdateHandler: (Int -> ())?
 
     /// An optional closure to handle dismissing the gallery, if this is nil the view will call `dismissViewControllerAnimated(true, completion: nil)`, if this is non-nil, the view controller will not dismiss itself
-    public var dismissHandler: (() -> ())?
+    public var dismissHandler: (RIGImageGalleryViewController -> ())?
 
     /// An optional closure to handle updating the count text
     public var countUpdateHandler: ((gallery: RIGImageGalleryViewController, position: Int, total: Int) -> ())? {
@@ -216,7 +216,7 @@ extension RIGImageGalleryViewController {
 
     func dismissPhotoView(sender: UIBarButtonItem) {
         if dismissHandler != nil {
-            dismissHandler?()
+            dismissHandler?(self)
         }
         else {
             dismissViewControllerAnimated(true, completion: nil)
