@@ -4,9 +4,9 @@ Pod::Spec.new do |s|
   s.summary          = "An image gallery view controller designed to work with the Raizlabs Interface Guidelines for iOS."
 
   s.description      = <<-DESC
-    RIGImageGallery is an image gallery for iOS written in Swift with sensible
-    defaults that takes care of most of the hard parts automatically and offers easy
-    block based customization.
+  RIGImageGallery is an image gallery for iOS written in Swift.
+
+  The goal is to offer sensible defaults that takes care of most of building an image gallery automatically, and offer easy block based customization.
                        DESC
 
   s.homepage         = "https://github.com/raizlabs/RIGImageGallery"
