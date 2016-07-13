@@ -66,20 +66,11 @@ class ImageGalleryViewControllerTests: XCTestCase {
         waitForExpectationsWithTimeout(1.0, handler: nil)
         imageGallery.doneButton = UIBarButtonItem()
         let dismissFired = expectationWithDescription("dismiss handler will fire on completion")
-        imageGallery.dismissTappedHandler = {
+        imageGallery.dismissHandler = {
             dismissFired.fulfill()
         }
         imageGallery.performSelector((imageGallery.navigationItem.leftBarButtonItem?.action)!, withObject: imageGallery)
         waitForExpectationsWithTimeout(1.0, handler: nil)
-
-        let traitCollection = UITraitCollection(userInterfaceIdiom: .Phone)
-        imageGallery.traitCollectionChangeHandler = { gallery, traits in
-            gallery.doneButton = traits.containsTraitsInCollection(UITraitCollection(userInterfaceIdiom: .Phone)) ? nil : UIBarButtonItem()
-        }
-        imageGallery.traitCollectionChangeHandler?(imageGallery, traitCollection)
-        XCTAssertNil(imageGallery.doneButton, "done button should be nil")
-        imageGallery.traitCollectionChangeHandler?(imageGallery, UITraitCollection())
-        XCTAssertNotNil(imageGallery.doneButton, "trait collection change handler should have restored it")
     }
 
     func testStatusBarHidden() {

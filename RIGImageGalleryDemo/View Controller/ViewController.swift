@@ -49,7 +49,7 @@ private extension ViewController {
 
     @objc func showGallery(sender: UIButton) {
         let photoViewController = loadImages()
-        photoViewController.dismissTappedHandler = dismissPhotoViewer
+        photoViewController.dismissHandler = dismissPhotoViewer
         photoViewController.actionButtonHandler = actionButtonHandler
         photoViewController.traitCollectionChangeHandler = traitCollectionChangeHandler
         photoViewController.countUpdateHandler = updateCount
@@ -72,11 +72,11 @@ private extension ViewController {
         gallery.countLabel.text = "\(position.successor()) of \(total)"
     }
 
-    func traitCollectionChangeHandler(photoView: RIGImageGalleryViewController, traitCollection: UITraitCollection) {
+    func traitCollectionChangeHandler(photoView: RIGImageGalleryViewController) {
         let isPhone = UITraitCollection(userInterfaceIdiom: .Phone)
         let isCompact = UITraitCollection(verticalSizeClass: .Compact)
         let allTraits = UITraitCollection(traitsFromCollections: [isPhone, isCompact])
-        photoView.doneButton = traitCollection.containsTraitsInCollection(allTraits) ? nil : UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil)
+        photoView.doneButton = photoView.traitCollection.containsTraitsInCollection(allTraits) ? nil : UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil)
     }
 
 }

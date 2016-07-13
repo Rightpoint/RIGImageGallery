@@ -43,14 +43,10 @@ class RIGSingleImageViewController: UIViewController {
 }
 
 private extension RIGSingleImageViewController {
+
     func viewerItemUpdated() {
-        if viewerItem?.image != nil {
-            scrollView.allowZoom = true
-            scrollView.zoomImage = viewerItem?.image
-        }
-        else {
-            scrollView.allowZoom = false
-            scrollView.zoomImage = viewerItem?.placeholderImage
-        }
+        scrollView.allowZoom = viewerItem?.image != nil
+        scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
     }
+
 }

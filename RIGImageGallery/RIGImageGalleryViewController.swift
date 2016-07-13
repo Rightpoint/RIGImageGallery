@@ -14,9 +14,9 @@ public class RIGImageGalleryViewController: UIPageViewController {
     public var actionButtonHandler: (RIGImageGalleryItem -> ())?
 
     /// An optional closure to allow cutom trait collection change handling
-    public var traitCollectionChangeHandler: ((RIGImageGalleryViewController, UITraitCollection) -> ())? {
+    public var traitCollectionChangeHandler: ((RIGImageGalleryViewController) -> ())? {
         didSet {
-            traitCollectionChangeHandler?(self, traitCollection)
+            traitCollectionChangeHandler?(self)
         }
     }
 
@@ -24,7 +24,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
     public var indexUpdateHandler: (Int -> ())?
 
     /// An optional closure to handle dismissing the gallery, if this is nil the view will call `dismissViewControllerAnimated(true, completion: nil)`, if this is non-nil, the view controller will not dismiss itself
-    public var dismissTappedHandler: (() -> ())?
+    public var dismissHandler: (() -> ())?
 
     /// An optional closure to handle updating the count text
     public var countUpdateHandler: ((gallery: RIGImageGalleryViewController, position: Int, total: Int) -> ())? {
@@ -40,7 +40,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
         }
     }
 
-    /// The bar button item to use for the left side of the screen, `didSet` adds the correct target and action to ensure that `dismissTappedHandler` is called when the button is pressed
+    /// The bar button item to use for the left side of the screen, `didSet` adds the correct target and action to ensure that `dismissHandler` is called when the button is pressed
     public var doneButton: UIBarButtonItem? = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil) {
         didSet {
             configureDoneButton()
@@ -62,11 +62,13 @@ public class RIGImageGalleryViewController: UIPageViewController {
         }
     }
 
-    private var navigationBarsHidden: Bool = false
+    private var navigationBarsHidden = false
     private var zoomRecognizer = UITapGestureRecognizer()
     private var toggleBarRecognizer = UITapGestureRecognizer()
-    private var currentImageViewController: RIGSingleImageViewController?
-    private var showDoneButton: Bool = true
+    private var currentImageViewController: RIGSingleImageViewController? {
+        return viewControllers?.first as? RIGSingleImageViewController
+    }
+    private var showDoneButton = true
 
     /**
      Changes the current image bieng displayed
@@ -106,10 +108,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
      - returns: the RIGImageGalleryViewController
      */
     public convenience init() {
-        self.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
-        dataSource = self
-        delegate = self
-        automaticallyAdjustsScrollViewInsets = false
+        self.init(images: [])
     }
 
     /**
@@ -122,19 +121,30 @@ public class RIGImageGalleryViewController: UIPageViewController {
     public convenience init(images: [RIGImageGalleryItem]) {
         self.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
         self.images = images
+    }
+
+
+    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : AnyObject]?) {
+        super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
         dataSource = self
         delegate = self
         automaticallyAdjustsScrollViewInsets = false
         handleImagesUpdate(oldValue: [])
+        configureDoneButton()
+        configureActionButton()
+    }
+
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
         configureDoneButton()
-        zoomRecognizer.addTarget(self, action: #selector(RIGImageGalleryViewController.toggleZoom(_:)))
+        zoomRecognizer.addTarget(self, action: #selector(toggleZoom(_:)))
         zoomRecognizer.numberOfTapsRequired = 2
         zoomRecognizer.delegate = self
-        toggleBarRecognizer.addTarget(self, action: #selector(RIGImageGalleryViewController.toggleBarVisiblity(_:)))
+        toggleBarRecognizer.addTarget(self, action: #selector(toggleBarVisiblity(_:)))
         toggleBarRecognizer.delegate = self
         view.addGestureRecognizer(zoomRecognizer)
         view.addGestureRecognizer(toggleBarRecognizer)
@@ -153,7 +163,6 @@ public class RIGImageGalleryViewController: UIPageViewController {
         updateBarStatus(animated: false)
         if currentImage < images.count {
             let photoPage =  RIGSingleImageViewController(viewerItem: images[currentImage])
-            currentImageViewController = photoPage
             setViewControllers([photoPage], direction: .Forward, animated: false, completion: nil)
         }
     }
@@ -169,7 +178,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
 
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        traitCollectionChangeHandler?(self, traitCollection)
+        traitCollectionChangeHandler?(self)
     }
 
 }
@@ -206,8 +215,8 @@ extension RIGImageGalleryViewController {
     }
 
     func dismissPhotoView(sender: UIBarButtonItem) {
-        if let dismissHandler = dismissTappedHandler {
-            dismissHandler()
+        if dismissHandler != nil {
+            dismissHandler?()
         }
         else {
             dismissViewControllerAnimated(true, completion: nil)
@@ -256,7 +265,7 @@ extension RIGImageGalleryViewController: UIPageViewControllerDelegate {
     }
 
     public func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if let index = viewControllers?.first.flatMap({ self.indexOf(viewController: $0) }) {
+        if let index = viewControllers?.first.flatMap({ indexOf(viewController: $0) }) {
             currentImage = index
         }
     }
@@ -270,19 +279,18 @@ private extension RIGImageGalleryViewController {
         guard let item = (viewController as? RIGSingleImageViewController)?.viewerItem else {
             return nil
         }
-        let index = (imagesArray ?? images).indexOf(item)
-        return index
+        return (imagesArray ?? images).indexOf(item)
     }
 
     func configureDoneButton() {
         doneButton?.target = self
-        doneButton?.action = #selector(RIGImageGalleryViewController.dismissPhotoView(_:))
+        doneButton?.action = #selector(dismissPhotoView(_:))
         navigationItem.leftBarButtonItem = doneButton
     }
 
     func configureActionButton() {
         actionButton?.target = self
-        actionButton?.action = #selector(RIGImageGalleryViewController.performAction(_:))
+        actionButton?.action = #selector(performAction(_:))
         navigationItem.rightBarButtonItem = actionButton
     }
 
