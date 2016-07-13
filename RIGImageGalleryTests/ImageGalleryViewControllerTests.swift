@@ -20,6 +20,7 @@ class ImageGalleryViewControllerTests: XCTestCase {
         imageGallery.viewDidLoad()
         imageGallery.view.frame = CGRect(x: 0, y: 0, width: 720, height: 480)
         imageGallery.images = UIImage.allGenerics.map({ RIGImageGalleryItem.init(image: $0) })
+        imageGallery.viewWillLayoutSubviews()
         imageGallery.viewWillAppear(false)
     }
     
@@ -29,6 +30,7 @@ class ImageGalleryViewControllerTests: XCTestCase {
     }
 
     func testChangingImages() {
+        imageGallery.images = Array(imageGallery.images.prefix(3))
         imageGallery.setCurrentImage(2, animated: false)
         imageGallery.images = [RIGImageGalleryItem(image: UIImage.genericImage(.wide))]
         imageGallery.setCurrentImage(2, animated: false)
@@ -43,30 +45,36 @@ class ImageGalleryViewControllerTests: XCTestCase {
         XCTAssertEqual(imageGallery.currentImage, 0, "Making making sure the current selected image is 0")
         imageGallery.setCurrentImage(2, animated: false)
         XCTAssertEqual(imageGallery.currentImage, 2, "Making sure current selected image updated")
-        imageGallery.setCurrentImage(0, animated: false)
+        imageGallery.setCurrentImage(0, animated: true)
         XCTAssertEqual(imageGallery.currentImage, 0, "Making sure current selected image updated")
     }
 
     func testDelegateAndBarButtons() {
-        let completeDelegate = CompletePhotoViewControllerDelegate()
-        imageGallery.photoViewDelegate = completeDelegate
-        XCTAssertTrue(imageGallery.navigationItem.leftBarButtonItem?.enabled ?? false)
+        // code coverage of the no delegate dismiss function
+        imageGallery.dismissPhotoView(UIBarButtonItem())
+        imageGallery.actionButton = UIBarButtonItem()
+        let actionFired = self.expectationWithDescription("action will fire on completion")
+        imageGallery.actionButtonHandler = { _ in
+            actionFired.fulfill()
+        }
+        imageGallery.performSelector((imageGallery.navigationItem.rightBarButtonItem?.action)!, withObject: imageGallery)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
         imageGallery.doneButton = UIBarButtonItem()
-        XCTAssertTrue(imageGallery.navigationItem.leftBarButtonItem?.enabled ?? false)
-        let incompleteDelegate = IncompletePhotoViewControllerDelegate()
-        imageGallery.photoViewDelegate = incompleteDelegate
-        let noDismissDelegate = NoDismissPhotoViewControllerDelegate()
-        imageGallery.photoViewDelegate = noDismissDelegate
-        XCTAssertFalse(imageGallery.navigationItem.leftBarButtonItem?.enabled ?? false)
+        let dismissFired = expectationWithDescription("dismiss handler will fire on completion")
+        imageGallery.dismissTappedHandler = {
+            dismissFired.fulfill()
+        }
+        imageGallery.performSelector((imageGallery.navigationItem.leftBarButtonItem?.action)!, withObject: imageGallery)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
 
-        imageGallery.actionForGalleryItem = { _ in }
-        XCTAssertTrue(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
-        imageGallery.actionButton = UIBarButtonItem()
-        XCTAssertTrue(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
-        imageGallery.actionForGalleryItem = nil
-        XCTAssertFalse(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
-        imageGallery.actionButton = UIBarButtonItem()
-        XCTAssertFalse(imageGallery.navigationItem.rightBarButtonItem?.enabled ?? false)
+        let traitCollection = UITraitCollection(userInterfaceIdiom: .Phone)
+        imageGallery.traitCollectionChangeHandler = { gallery, traits in
+            gallery.doneButton = traits.containsTraitsInCollection(UITraitCollection(userInterfaceIdiom: .Phone)) ? nil : UIBarButtonItem()
+        }
+        imageGallery.traitCollectionChangeHandler?(imageGallery, traitCollection)
+        XCTAssertNil(imageGallery.doneButton, "done button should be nil")
+        imageGallery.traitCollectionChangeHandler?(imageGallery, UITraitCollection())
+        XCTAssertNotNil(imageGallery.doneButton, "trait collection change handler should have restored it")
     }
 
     func testStatusBarHidden() {
@@ -75,38 +83,17 @@ class ImageGalleryViewControllerTests: XCTestCase {
         XCTAssertTrue(imageGallery.prefersStatusBarHidden())
     }
 
-}
-
-@objc private class CompletePhotoViewControllerDelegate: NSObject, RIGPhotoViewControllerDelegate {
-
-    @objc func dismissPhotoViewer() {
-    }
-
-    @objc func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool {
-        return true
-    }
-
-    @objc func handleGalleryIndexUpdate(newIndex: Int) {
-    }
-}
-
-@objc private class NoDismissPhotoViewControllerDelegate: NSObject, RIGPhotoViewControllerDelegate {
-
-    @objc func dismissPhotoViewer() {
-    }
-
-    @objc func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool {
-        return false
-    }
-
-    @objc func handleGalleryIndexUpdate(newIndex: Int) {
-    }
-}
-
-
-@objc private class IncompletePhotoViewControllerDelegate: NSObject, RIGPhotoViewControllerDelegate {
-
-    @objc func dismissPhotoViewer() {
+    func testPageViewController() {
+        XCTAssertNotNil(imageGallery.viewControllers?.first as? RIGSingleImageViewController)
+        let firstView = imageGallery.viewControllers!.first as! RIGSingleImageViewController
+        XCTAssertEqual(firstView.viewerItem, imageGallery.images.first, "The first view should have the first image in the gallery")
+        XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerBeforeViewController: firstView), "The view before the first view should be nil")
+        let secondView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: firstView) as! RIGSingleImageViewController
+        XCTAssertEqual(secondView.viewerItem, imageGallery.images[1], "The second view should have the second image in the gallery")
+        XCTAssertEqual((imageGallery.pageViewController(imageGallery, viewControllerBeforeViewController: secondView) as! RIGSingleImageViewController).viewerItem, firstView.viewerItem, "the view before the second view should be the first view, which is testable by comparing viewer items")
+        let thirdView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: secondView)!
+        let fourthView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: thirdView)!
+        XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: fourthView), "The view after the end of the list should be nil")
     }
 
 }

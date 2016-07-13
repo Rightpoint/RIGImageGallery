@@ -8,27 +8,19 @@
 
 import UIKit
 
-@objc public protocol RIGPhotoViewControllerDelegate {
-
-    func dismissPhotoViewer()
-    optional func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool
-    optional func handleGalleryIndexUpdate(newIndex: Int)
-
-}
-
 public class RIGImageGalleryViewController: UIPageViewController {
 
-    public var photoViewDelegate: RIGPhotoViewControllerDelegate? {
+    public var actionButtonHandler: (RIGImageGalleryItem -> ())?
+
+    public var traitCollectionChangeHandler: ((RIGImageGalleryViewController, UITraitCollection) -> ())? {
         didSet {
-            configureDoneButton()
+            traitCollectionChangeHandler?(self, traitCollection)
         }
     }
 
-    public var actionForGalleryItem: (RIGImageGalleryItem -> ())? {
-        didSet {
-            configureActionButton()
-        }
-    }
+    public var indexUpdateHandler: (Int -> ())?
+
+    public var dismissTappedHandler: (() -> ())?
 
     public var images: [RIGImageGalleryItem] = [] {
         didSet {
@@ -36,13 +28,13 @@ public class RIGImageGalleryViewController: UIPageViewController {
         }
     }
 
-    public var doneButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil) {
+    public var doneButton: UIBarButtonItem? = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil) {
         didSet {
             configureDoneButton()
         }
     }
 
-    public var actionButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: nil, action: nil) {
+    public var actionButton: UIBarButtonItem? {
         didSet {
             configureActionButton()
         }
@@ -50,7 +42,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
 
     public private(set) var currentImage: Int = 0 {
         didSet {
-            photoViewDelegate?.handleGalleryIndexUpdate?(currentImage)
+            indexUpdateHandler?(currentImage)
             updateCountText()
         }
     }
@@ -59,6 +51,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
     private var zoomRecognizer = UITapGestureRecognizer()
     private var toggleBarRecognizer = UITapGestureRecognizer()
     private var currentImageViewController: RIGSingleImageViewController?
+    private var showDoneButton: Bool = true
 
     public func setCurrentImage(currentImage: Int, animated: Bool) {
         guard currentImage >= 0 && currentImage < images.count else {
@@ -102,7 +95,6 @@ public class RIGImageGalleryViewController: UIPageViewController {
         view.addGestureRecognizer(zoomRecognizer)
         view.addGestureRecognizer(toggleBarRecognizer)
         view.backgroundColor = UIColor.blackColor()
-
         countLabel.sizeToFit()
 
         toolbarItems = [
@@ -133,7 +125,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
 
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        configureDoneButton()
+        traitCollectionChangeHandler?(self, traitCollection)
     }
 
 }
@@ -170,8 +162,8 @@ extension RIGImageGalleryViewController {
     }
 
     func dismissPhotoView(sender: UIBarButtonItem) {
-        if let pDelegate = photoViewDelegate {
-            pDelegate.dismissPhotoViewer()
+        if let dismissHandler = dismissTappedHandler {
+            dismissHandler()
         }
         else {
             dismissViewControllerAnimated(true, completion: nil)
@@ -180,7 +172,7 @@ extension RIGImageGalleryViewController {
 
     func performAction(sender: UIBarButtonItem) {
         if let item = currentImageViewController?.viewerItem {
-            actionForGalleryItem?(item)
+            actionButtonHandler?(item)
         }
     }
 
@@ -239,25 +231,15 @@ private extension RIGImageGalleryViewController {
     }
 
     func configureDoneButton() {
-        doneButton.target = self
-        doneButton.action = #selector(RIGImageGalleryViewController.dismissPhotoView(_:))
-        if photoViewDelegate?.showDismissForTraitCollection?(traitCollection) ?? true {
-            navigationItem.leftBarButtonItem = doneButton
-        }
-        else {
-            navigationItem.leftBarButtonItem = nil
-        }
+        doneButton?.target = self
+        doneButton?.action = #selector(RIGImageGalleryViewController.dismissPhotoView(_:))
+        navigationItem.leftBarButtonItem = doneButton
     }
 
     func configureActionButton() {
-        actionButton.target = self
-        actionButton.action = #selector(RIGImageGalleryViewController.performAction(_:))
-        if actionForGalleryItem != nil {
-            navigationItem.rightBarButtonItem = actionButton
-        }
-        else {
-            navigationItem.rightBarButtonItem = nil
-        }
+        actionButton?.target = self
+        actionButton?.action = #selector(RIGImageGalleryViewController.performAction(_:))
+        navigationItem.rightBarButtonItem = actionButton
     }
 
     func updateBarStatus(animated animated: Bool) {

@@ -49,7 +49,10 @@ private extension ViewController {
 
     @objc func showGallery(sender: UIButton) {
         let photoViewController = RIGImageGalleryViewController()
-        photoViewController.photoViewDelegate = self
+        weak var wSelf = self
+        photoViewController.dismissTappedHandler = wSelf?.dismissPhotoViewer
+        photoViewController.actionButtonHandler = wSelf?.actionButtonHandler
+        photoViewController.traitCollectionChangeHandler = wSelf?.traitCollectionChangeHandler
         loadImages(photoViewController)
         let navigationController = navBarWrappedViewController(photoViewController)
         presentViewController(navigationController, animated: true, completion: nil)
@@ -57,20 +60,20 @@ private extension ViewController {
 
 }
 
-extension ViewController: RIGPhotoViewControllerDelegate {
+private extension ViewController {
 
     func dismissPhotoViewer() {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func actionForGalleryItem(galleryItem: RIGImageGalleryItem) {
+    func actionButtonHandler(galleryItem: RIGImageGalleryItem) {
     }
 
-    func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool {
+    func traitCollectionChangeHandler(photoView: RIGImageGalleryViewController, traitCollection: UITraitCollection) {
         let isPhone = UITraitCollection(userInterfaceIdiom: .Phone)
         let isCompact = UITraitCollection(verticalSizeClass: .Compact)
         let allTraits = UITraitCollection(traitsFromCollections: [isPhone, isCompact])
-        return !traitCollection.containsTraitsInCollection(allTraits)
+        photoView.doneButton = traitCollection.containsTraitsInCollection(allTraits) ? nil : UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil)
     }
 
 }

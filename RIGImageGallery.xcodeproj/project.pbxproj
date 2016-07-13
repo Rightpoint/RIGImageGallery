@@ -22,6 +22,7 @@
 		72BA26631C6B987200F1FE22 /* RIGImageGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BA265F1C6B987200F1FE22 /* RIGImageGalleryViewController.swift */; };
 		72BA26641C6B987200F1FE22 /* RIGImageGalleryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BA26601C6B987200F1FE22 /* RIGImageGalleryItem.swift */; };
 		72BA26651C6B987200F1FE22 /* RIGSingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BA26611C6B987200F1FE22 /* RIGSingleImageViewController.swift */; };
+		72FE02CC1D356C8500738265 /* SingleImageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FE02CB1D356C8500738265 /* SingleImageViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		72BA265F1C6B987200F1FE22 /* RIGImageGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGImageGalleryViewController.swift; sourceTree = "<group>"; };
 		72BA26601C6B987200F1FE22 /* RIGImageGalleryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGImageGalleryItem.swift; sourceTree = "<group>"; };
 		72BA26611C6B987200F1FE22 /* RIGSingleImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGSingleImageViewController.swift; sourceTree = "<group>"; };
+		72FE02CB1D356C8500738265 /* SingleImageViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleImageViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				72060F5B1D2FFA9C001281E0 /* Assets */,
 				72060F521D2FFA6C001281E0 /* AutoCenteringScrollViewTests.swift */,
 				7255D7D21D352D6D0060479A /* ImageGalleryViewControllerTests.swift */,
+				72FE02CB1D356C8500738265 /* SingleImageViewControllerTests.swift */,
 				7255D7D01D35246C0060479A /* TestingExtensions.swift */,
 			);
 			path = RIGImageGalleryTests;
@@ -344,6 +347,7 @@
 			files = (
 				7255D7D31D352D6D0060479A /* ImageGalleryViewControllerTests.swift in Sources */,
 				7255D7D11D35246C0060479A /* TestingExtensions.swift in Sources */,
+				72FE02CC1D356C8500738265 /* SingleImageViewControllerTests.swift in Sources */,
 				72060F531D2FFA6C001281E0 /* AutoCenteringScrollViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
