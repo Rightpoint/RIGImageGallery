@@ -12,8 +12,6 @@
 		72A828111C68F24500B25CEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72A8280F1C68F24500B25CEE /* Main.storyboard */; };
 		72A828131C68F24500B25CEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72A828121C68F24500B25CEE /* Assets.xcassets */; };
 		72A828161C68F24500B25CEE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72A828141C68F24500B25CEE /* LaunchScreen.storyboard */; };
-		72A8282B1C69346100B25CEE /* AlamofireImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72A8281D1C68F2BF00B25CEE /* AlamofireImage.framework */; };
-		72A8282C1C69346300B25CEE /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72A8281C1C68F2BF00B25CEE /* Alamofire.framework */; };
 		72BA26551C6B985900F1FE22 /* RIGImageGallery.h in Headers */ = {isa = PBXBuildFile; fileRef = 72BA26541C6B985900F1FE22 /* RIGImageGallery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72BA26591C6B985900F1FE22 /* RIGImageGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */; };
 		72BA265A1C6B985900F1FE22 /* RIGImageGallery.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -55,8 +53,6 @@
 		72A828121C68F24500B25CEE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		72A828151C68F24500B25CEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		72A828171C68F24500B25CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		72A8281C1C68F2BF00B25CEE /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		72A8281D1C68F2BF00B25CEE /* AlamofireImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlamofireImage.framework; path = Carthage/Build/iOS/AlamofireImage.framework; sourceTree = "<group>"; };
 		72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RIGImageGallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72BA26541C6B985900F1FE22 /* RIGImageGallery.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RIGImageGallery.h; sourceTree = "<group>"; };
 		72BA26561C6B985900F1FE22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -71,9 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72A8282B1C69346100B25CEE /* AlamofireImage.framework in Frameworks */,
 				72BA26591C6B985900F1FE22 /* RIGImageGallery.framework in Frameworks */,
-				72A8282C1C69346300B25CEE /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +84,6 @@
 		72A827EF1C68F17900B25CEE = {
 			isa = PBXGroup;
 			children = (
-				72A828041C68F1C100B25CEE /* Frameworks */,
 				72A827FA1C68F17900B25CEE /* Products */,
 				72BA26531C6B985900F1FE22 /* RIGImageGallery */,
 				72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */,
@@ -106,24 +99,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		72A828041C68F1C100B25CEE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				72A8281C1C68F2BF00B25CEE /* Alamofire.framework */,
-				72A8281D1C68F2BF00B25CEE /* AlamofireImage.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */ = {
 			isa = PBXGroup;
 			children = (
-				72A8280B1C68F24500B25CEE /* AppDelegate.swift */,
-				72A8280D1C68F24500B25CEE /* ViewController.swift */,
-				72A8280F1C68F24500B25CEE /* Main.storyboard */,
-				72A828121C68F24500B25CEE /* Assets.xcassets */,
-				72A828141C68F24500B25CEE /* LaunchScreen.storyboard */,
-				72A828171C68F24500B25CEE /* Info.plist */,
+				72E3A5BB1D2FE4EC00E9C023 /* Assets */,
+				72E3A5BA1D2FE4E300E9C023 /* View Controller */,
+				72E3A5B91D2FE4D600E9C023 /* App Delegate */,
 			);
 			path = RIGImageGalleryDemo;
 			sourceTree = "<group>";
@@ -131,14 +112,49 @@
 		72BA26531C6B985900F1FE22 /* RIGImageGallery */ = {
 			isa = PBXGroup;
 			children = (
-				72BA26561C6B985900F1FE22 /* Info.plist */,
+				72E3A5BF1D2FE52100E9C023 /* Assets */,
 				72BA265E1C6B987200F1FE22 /* RIGAutoCenteringScrollView.swift */,
-				72BA26541C6B985900F1FE22 /* RIGImageGallery.h */,
 				72BA26601C6B987200F1FE22 /* RIGImageGalleryItem.swift */,
 				72BA265F1C6B987200F1FE22 /* RIGImageGalleryViewController.swift */,
 				72BA26611C6B987200F1FE22 /* RIGSingleImageViewController.swift */,
 			);
 			path = RIGImageGallery;
+			sourceTree = "<group>";
+		};
+		72E3A5B91D2FE4D600E9C023 /* App Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				72A8280B1C68F24500B25CEE /* AppDelegate.swift */,
+			);
+			name = "App Delegate";
+			sourceTree = "<group>";
+		};
+		72E3A5BA1D2FE4E300E9C023 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				72A8280D1C68F24500B25CEE /* ViewController.swift */,
+			);
+			name = "View Controller";
+			sourceTree = "<group>";
+		};
+		72E3A5BB1D2FE4EC00E9C023 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				72A8280F1C68F24500B25CEE /* Main.storyboard */,
+				72A828121C68F24500B25CEE /* Assets.xcassets */,
+				72A828141C68F24500B25CEE /* LaunchScreen.storyboard */,
+				72A828171C68F24500B25CEE /* Info.plist */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		72E3A5BF1D2FE52100E9C023 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				72BA26561C6B985900F1FE22 /* Info.plist */,
+				72BA26541C6B985900F1FE22 /* RIGImageGallery.h */,
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,7 +178,6 @@
 				72A828051C68F24500B25CEE /* Sources */,
 				72A828061C68F24500B25CEE /* Frameworks */,
 				72A828071C68F24500B25CEE /* Resources */,
-				72A8281B1C68F28000B25CEE /* Carthage */,
 				72BA263B1C6B97A500F1FE22 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -251,25 +266,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		72A8281B1C68F28000B25CEE /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/AlamofireImage.framework",
-			);
-			name = Carthage;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		72A828051C68F24500B25CEE /* Sources */ = {
@@ -418,10 +414,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
@@ -437,10 +430,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;

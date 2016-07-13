@@ -10,7 +10,7 @@ import UIKit
 
 class RIGSingleImageViewController: UIViewController {
 
-    var viewIndex:Int  = 0
+    var viewIndex: Int  = 0
 
     var viewerItem: RIGImageGalleryItem? {
         didSet {

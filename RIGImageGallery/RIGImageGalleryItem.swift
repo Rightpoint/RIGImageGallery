@@ -14,7 +14,7 @@ public class RIGImageGalleryItem: NSObject {
     public let placeholderImage: UIImage?
     public let title: String?
 
-    public func updateImage(image:UIImage?) -> RIGImageGalleryItem {
+    public func updateImage(image: UIImage?) -> RIGImageGalleryItem {
         return RIGImageGalleryItem(image: image, placeholderImage: placeholderImage, title: title)
     }
 
@@ -23,5 +23,5 @@ public class RIGImageGalleryItem: NSObject {
         self.placeholderImage = placeholderImage
         self.title = title
     }
-    
+
 }

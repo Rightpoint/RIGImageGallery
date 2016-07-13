@@ -8,35 +8,15 @@
 
 import UIKit
 import RIGImageGallery
-import Alamofire
-import AlamofireImage
 
 class ViewController: UIViewController {
 
-    var rigController: RIGImageGalleryViewController?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    let urls: [NSURL] = [
-        NSURL(string: "https://placehold.it/1920x1080"),
-        NSURL(string: "https://placehold.it/1080x1920"),
-        NSURL(string: "https://placehold.it/350x150"),
-        NSURL(string: "https://placehold.it/150x350"),
-        ].flatMap { $0 }
+    let imageSession = NSURLSession(configuration: .defaultSessionConfiguration())
 
     @IBAction func showGallery(sender: UIButton) {
         let photoViewController = RIGImageGalleryViewController()
-        rigController = photoViewController
         photoViewController.photoViewDelegate = self
-        loadImages()
+        loadImages(photoViewController)
         let navigationController = navBarWrappedViewController(photoViewController)
         presentViewController(navigationController, animated: true, completion: nil)
     }
@@ -64,34 +44,50 @@ extension ViewController: RIGPhotoViewControllerDelegate {
     }
 
     func showDismissForTraitCollection(traitCollection: UITraitCollection) -> Bool {
-        return !traitCollection.containsTraitsInCollection(UITraitCollection(verticalSizeClass: .Compact))
+        let isPhone = UITraitCollection(userInterfaceIdiom: .Phone)
+        let isCompact = UITraitCollection(verticalSizeClass: .Compact)
+        let allTraits = UITraitCollection(traitsFromCollections: [isPhone, isCompact])
+        return !traitCollection.containsTraitsInCollection(allTraits)
     }
 
-    func loadImages() {
-        let reqs: [URLRequestConvertible] = urls.map { url in
-            NSURLRequest(URL: url)
+}
+
+private extension ViewController {
+
+    static let urls: [NSURL] = [
+        NSURL(string: "https://placehold.it/1920x1080"),
+        NSURL(string: "https://placehold.it/1080x1920"),
+        NSURL(string: "https://placehold.it/350x150"),
+        NSURL(string: "https://placehold.it/150x350"),
+        ].flatMap { $0 }
+
+    func loadImages(rigController: RIGImageGalleryViewController) {
+        let emptyItem = RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder"))
+
+        let imagesAndRequests: [(image: RIGImageGalleryItem, task: NSURLSessionTask)] = self.dynamicType.urls.enumerate().map { (index, URL) in
+            let completion = rigController.handleImageLoadAtIndex(index)
+            let request = imageSession.dataTaskWithRequest(NSURLRequest(URL: URL), completionHandler: completion)
+            return (image: emptyItem, task: request)
         }
-        guard let rig = rigController else {
-            return
-        }
-        let img = UIImage(named: "placeholder")
-        rig.images = Array<RIGImageGalleryItem>.init(count: reqs.count, repeatedValue: RIGImageGalleryItem(placeholderImage: img))
-        rig.setCurrentImage(1, animated: false)
-        let downloader = ImageDownloader.defaultInstance
-        downloader.downloadImages(URLRequests: reqs, filter: nil) { response in
-            guard let request = response.request, let image = response.result.value else {
+
+        rigController.images = imagesAndRequests.map({ $0.image })
+        imagesAndRequests.forEach({ $0.task.resume() })
+        rigController.setCurrentImage(1, animated: false)
+    }
+}
+
+private extension RIGImageGalleryViewController {
+    func handleImageLoadAtIndex(index: Int) -> ((NSData?, NSURLResponse?, NSError?) -> ()) {
+        return { [weak self] (data: NSData?, response: NSURLResponse?, error: NSError?) in
+            guard let image = data.flatMap(UIImage.init) where error == nil else {
+                print(error)
                 return
             }
-            let index = reqs.indexOf { req in
-                request == req as? NSURLRequest
-            }
-            if let matchIndex = index {
-                let update = rig.images[matchIndex].updateImage(image)
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
-                rig.images[matchIndex] = update
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) {
+                if let currentImage = self?.images[index] {
+                    self?.images[index] = currentImage.updateImage(image)
                 }
             }
         }
     }
 }
-
