@@ -10,36 +10,51 @@ import UIKit
 
 public class RIGImageGalleryViewController: UIPageViewController {
 
+    /// An optional closure to execute if the action button is tapped
     public var actionButtonHandler: (RIGImageGalleryItem -> ())?
 
+    /// An optional closure to allow cutom trait collection change handling
     public var traitCollectionChangeHandler: ((RIGImageGalleryViewController, UITraitCollection) -> ())? {
         didSet {
             traitCollectionChangeHandler?(self, traitCollection)
         }
     }
 
+    /// An optional closure to execute when the active index is updated
     public var indexUpdateHandler: (Int -> ())?
 
+    /// An optional closure to handle dismissing the gallery, if this is nil the view will call `dismissViewControllerAnimated(true, completion: nil)`, if this is non-nil, the view controller will not dismiss itself
     public var dismissTappedHandler: (() -> ())?
 
+    /// An optional closure to handle updating the count text
+    public var countUpdateHandler: ((gallery: RIGImageGalleryViewController, position: Int, total: Int) -> ())? {
+        didSet {
+            updateCountText()
+        }
+    }
+
+    /// The array of images to display. The view controller will automatically handle updates
     public var images: [RIGImageGalleryItem] = [] {
         didSet {
             handleImagesUpdate(oldValue: oldValue)
         }
     }
 
+    /// The bar button item to use for the left side of the screen, `didSet` adds the correct target and action to ensure that `dismissTappedHandler` is called when the button is pressed
     public var doneButton: UIBarButtonItem? = UIBarButtonItem(barButtonSystemItem: .Done, target: nil, action: nil) {
         didSet {
             configureDoneButton()
         }
     }
 
+    /// The bar button item to use for the right side of the screen, `didSet` adds the correct target and action to ensure that `actionButtonHandler` is called
     public var actionButton: UIBarButtonItem? {
         didSet {
             configureActionButton()
         }
     }
 
+    /// The index of the image currently bieng displayed
     public private(set) var currentImage: Int = 0 {
         didSet {
             indexUpdateHandler?(currentImage)
@@ -53,6 +68,12 @@ public class RIGImageGalleryViewController: UIPageViewController {
     private var currentImageViewController: RIGSingleImageViewController?
     private var showDoneButton: Bool = true
 
+    /**
+     Changes the current image bieng displayed
+
+     - parameter currentImage: The index of the image in `images` to display
+     - parameter animated:     A flag that determines if this should be an animated or non-animated transition
+     */
     public func setCurrentImage(currentImage: Int, animated: Bool) {
         guard currentImage >= 0 && currentImage < images.count else {
             self.currentImage = 0
@@ -71,6 +92,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
         setViewControllers([newView], direction: direction, animated: animated, completion: nil)
     }
 
+    /// The label used to display the current position in the array
     public let countLabel: UILabel = {
         let counter = UILabel()
         counter.textColor = .whiteColor()
@@ -78,6 +100,11 @@ public class RIGImageGalleryViewController: UIPageViewController {
         return counter
     }()
 
+    /**
+     A convenience initializer to return a configured empty RIGImageGalleryViewController
+
+     - returns: the RIGImageGalleryViewController
+     */
     public convenience init() {
         self.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
         dataSource = self
@@ -85,6 +112,13 @@ public class RIGImageGalleryViewController: UIPageViewController {
         automaticallyAdjustsScrollViewInsets = false
     }
 
+    /**
+     A convenience initializer to return a configured RIGImageGalleryViewController with an array of images
+
+     - parameter images: The images to use in the gallery
+
+     - returns: the RIGImageGalleryViewController
+     */
     public convenience init(images: [RIGImageGalleryItem]) {
         self.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
         self.images = images
@@ -95,6 +129,7 @@ public class RIGImageGalleryViewController: UIPageViewController {
     }
 
     public override func viewDidLoad() {
+        super.viewDidLoad()
         configureDoneButton()
         zoomRecognizer.addTarget(self, action: #selector(RIGImageGalleryViewController.toggleZoom(_:)))
         zoomRecognizer.numberOfTapsRequired = 2
@@ -277,7 +312,12 @@ private extension RIGImageGalleryViewController {
     }
 
     private func updateCountText() {
-        countLabel.text = "\(currentImage.successor()) of \(images.count)"
+        if countUpdateHandler != nil {
+            countUpdateHandler?(gallery: self, position: currentImage, total: images.count)
+        }
+        else {
+            countLabel.text = nil
+        }
         countLabel.sizeToFit()
     }
 

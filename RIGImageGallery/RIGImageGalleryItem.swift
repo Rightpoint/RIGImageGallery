@@ -8,10 +8,16 @@
 
 import UIKit
 
+/**
+ *  RIGImageGalleryItem stores an image, placeholder Image, and title to associate with each image
+ */
 public struct RIGImageGalleryItem: Equatable {
 
+    /// The image to display
     public var image: UIImage?
+    /// A placeholder image to display if the display image is nil or becomes nil
     public var placeholderImage: UIImage?
+    /// The title of the image
     public var title: String?
 
     public init(image: UIImage? = nil, placeholderImage: UIImage? = nil, title: String? = nil) {

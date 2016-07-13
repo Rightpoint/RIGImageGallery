@@ -15,11 +15,11 @@ class ImageGalleryViewControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        imageGallery = RIGImageGalleryViewController()
+        let images = UIImage.allGenerics.map({ RIGImageGalleryItem.init(image: $0) })
+        imageGallery = RIGImageGalleryViewController(images: images)
         imageGallery.loadView()
         imageGallery.viewDidLoad()
         imageGallery.view.frame = CGRect(x: 0, y: 0, width: 720, height: 480)
-        imageGallery.images = UIImage.allGenerics.map({ RIGImageGalleryItem.init(image: $0) })
         imageGallery.viewWillLayoutSubviews()
         imageGallery.viewWillAppear(false)
     }
@@ -32,6 +32,9 @@ class ImageGalleryViewControllerTests: XCTestCase {
     func testChangingImages() {
         imageGallery.images = Array(imageGallery.images.prefix(3))
         imageGallery.setCurrentImage(2, animated: false)
+        XCTAssertNil(imageGallery.countLabel.text, "Count label should be empty by default")
+        imageGallery.countUpdateHandler = RIGImageGalleryViewController.updateCount
+        XCTAssertNotNil(imageGallery.countLabel.text, "Count label should no longer be empty after setting update count")
         imageGallery.images = [RIGImageGalleryItem(image: UIImage.genericImage(.wide))]
         imageGallery.setCurrentImage(2, animated: false)
         XCTAssertEqual(imageGallery.currentImage, 0, "Making making sure the current selected image is 0")
@@ -47,6 +50,8 @@ class ImageGalleryViewControllerTests: XCTestCase {
         XCTAssertEqual(imageGallery.currentImage, 2, "Making sure current selected image updated")
         imageGallery.setCurrentImage(0, animated: true)
         XCTAssertEqual(imageGallery.currentImage, 0, "Making sure current selected image updated")
+        imageGallery = RIGImageGalleryViewController()
+        XCTAssertTrue(imageGallery.images.isEmpty, "Making sure a new image gallery is initalized empty")
     }
 
     func testDelegateAndBarButtons() {
@@ -96,4 +101,10 @@ class ImageGalleryViewControllerTests: XCTestCase {
         XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: fourthView), "The view after the end of the list should be nil")
     }
 
+}
+
+private extension RIGImageGalleryViewController {
+    static func updateCount(gallery: RIGImageGalleryViewController, position: Int, total: Int) {
+        gallery.countLabel.text = "\(position.successor()) of \(total)"
+    }
 }

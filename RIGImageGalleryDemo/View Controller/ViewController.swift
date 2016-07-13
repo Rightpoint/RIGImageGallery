@@ -52,6 +52,7 @@ private extension ViewController {
         photoViewController.dismissTappedHandler = dismissPhotoViewer
         photoViewController.actionButtonHandler = actionButtonHandler
         photoViewController.traitCollectionChangeHandler = traitCollectionChangeHandler
+        photoViewController.countUpdateHandler = updateCount
         let navigationController = navBarWrappedViewController(photoViewController)
         presentViewController(navigationController, animated: true, completion: nil)
     }
@@ -65,6 +66,10 @@ private extension ViewController {
     }
 
     func actionButtonHandler(galleryItem: RIGImageGalleryItem) {
+    }
+
+    func updateCount(gallery: RIGImageGalleryViewController, position: Int, total: Int) {
+        gallery.countLabel.text = "\(position.successor()) of \(total)"
     }
 
     func traitCollectionChangeHandler(photoView: RIGImageGalleryViewController, traitCollection: UITraitCollection) {
