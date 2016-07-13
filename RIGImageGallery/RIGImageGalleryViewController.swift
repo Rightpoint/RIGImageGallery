@@ -85,6 +85,15 @@ public class RIGImageGalleryViewController: UIPageViewController {
         automaticallyAdjustsScrollViewInsets = false
     }
 
+    public convenience init(images: [RIGImageGalleryItem]) {
+        self.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
+        self.images = images
+        dataSource = self
+        delegate = self
+        automaticallyAdjustsScrollViewInsets = false
+        handleImagesUpdate(oldValue: [])
+    }
+
     public override func viewDidLoad() {
         configureDoneButton()
         zoomRecognizer.addTarget(self, action: #selector(RIGImageGalleryViewController.toggleZoom(_:)))

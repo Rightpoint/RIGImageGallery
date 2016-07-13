@@ -48,12 +48,10 @@ class ViewController: UIViewController {
 private extension ViewController {
 
     @objc func showGallery(sender: UIButton) {
-        let photoViewController = RIGImageGalleryViewController()
-        weak var wSelf = self
-        photoViewController.dismissTappedHandler = wSelf?.dismissPhotoViewer
-        photoViewController.actionButtonHandler = wSelf?.actionButtonHandler
-        photoViewController.traitCollectionChangeHandler = wSelf?.traitCollectionChangeHandler
-        loadImages(photoViewController)
+        let photoViewController = loadImages()
+        photoViewController.dismissTappedHandler = dismissPhotoViewer
+        photoViewController.actionButtonHandler = actionButtonHandler
+        photoViewController.traitCollectionChangeHandler = traitCollectionChangeHandler
         let navigationController = navBarWrappedViewController(photoViewController)
         presentViewController(navigationController, animated: true, completion: nil)
     }
@@ -87,17 +85,24 @@ private extension ViewController {
         NSURL(string: "https://placehold.it/150x350"),
         ].flatMap { $0 }
 
-    func loadImages(rigController: RIGImageGalleryViewController) {
+    func loadImages() -> RIGImageGalleryViewController {
 
-        let imagesAndRequests: [(image: UIImage, task: NSURLSessionTask)] = self.dynamicType.urls.enumerate().map { (index, URL) in
-            let completion = rigController.handleImageLoadAtIndex(index)
-            let request = imageSession.dataTaskWithRequest(NSURLRequest(URL: URL), completionHandler: completion)
-            return (image: UIImage(named: "placeholder") ?? UIImage(), task: request)
+        let urls = self.dynamicType.urls
+
+        let rigItems = urls.map { _ in
+            RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder") ?? UIImage())
         }
 
-        rigController.images = imagesAndRequests.map({ RIGImageGalleryItem(placeholderImage: $0.image) })
-        imagesAndRequests.forEach({ $0.task.resume() })
+        let rigController = RIGImageGalleryViewController(images: rigItems)
+
+        for (index, URL) in urls.enumerate() {
+            let completion = rigController.handleImageLoadAtIndex(index)
+            let request = imageSession.dataTaskWithRequest(NSURLRequest(URL: URL), completionHandler: completion)
+            request.resume()
+        }
+
         rigController.setCurrentImage(2, animated: false)
+        return rigController
     }
 
     func navBarWrappedViewController(viewController: UIViewController) -> UINavigationController {
