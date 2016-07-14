@@ -65,12 +65,12 @@ class RIGAutoCenteringScrollView: UIScrollView {
 
 extension RIGAutoCenteringScrollView {
 
-    func toggleZoom() {
+    func toggleZoom(animated animated: Bool = true) {
         if zoomScale != minimumZoomScale {
-            setZoomScale(minimumZoomScale, animated: true)
+            setZoomScale(minimumZoomScale, animated: animated)
         }
         else {
-            setZoomScale(maximumZoomScale, animated: true)
+            setZoomScale(maximumZoomScale, animated: animated)
         }
     }
 

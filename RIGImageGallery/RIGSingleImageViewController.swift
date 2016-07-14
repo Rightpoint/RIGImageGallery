@@ -10,22 +10,19 @@ import UIKit
 
 class RIGSingleImageViewController: UIViewController {
 
-    var viewIndex: Int  = 0
-
     var viewerItem: RIGImageGalleryItem? {
         didSet {
-            if viewerItem?.image != nil {
-                scrollView.allowZoom = true
-                scrollView.zoomImage = viewerItem?.image
-            }
-            else {
-                scrollView.allowZoom = false
-                scrollView.zoomImage = viewerItem?.placeholderImage
-            }
+            viewerItemUpdated()
         }
     }
 
     let scrollView = RIGAutoCenteringScrollView()
+
+    convenience init(viewerItem: RIGImageGalleryItem) {
+        self.init()
+        self.viewerItem = viewerItem
+        viewerItemUpdated()
+    }
 
     override func loadView() {
         automaticallyAdjustsScrollViewInsets = false
@@ -41,6 +38,15 @@ class RIGSingleImageViewController: UIViewController {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+    }
+
+}
+
+private extension RIGSingleImageViewController {
+
+    func viewerItemUpdated() {
+        scrollView.allowZoom = viewerItem?.image != nil
+        scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
     }
 
 }

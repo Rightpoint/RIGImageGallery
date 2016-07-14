@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72060F531D2FFA6C001281E0 /* AutoCenteringScrollViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72060F521D2FFA6C001281E0 /* AutoCenteringScrollViewTests.swift */; };
+		72060F551D2FFA6C001281E0 /* RIGImageGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */; };
+		7255D7D11D35246C0060479A /* TestingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7255D7D01D35246C0060479A /* TestingExtensions.swift */; };
+		7255D7D31D352D6D0060479A /* ImageGalleryViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7255D7D21D352D6D0060479A /* ImageGalleryViewControllerTests.swift */; };
 		72A8280C1C68F24500B25CEE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8280B1C68F24500B25CEE /* AppDelegate.swift */; };
 		72A8280E1C68F24500B25CEE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A8280D1C68F24500B25CEE /* ViewController.swift */; };
-		72A828111C68F24500B25CEE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72A8280F1C68F24500B25CEE /* Main.storyboard */; };
 		72A828131C68F24500B25CEE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72A828121C68F24500B25CEE /* Assets.xcassets */; };
 		72A828161C68F24500B25CEE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72A828141C68F24500B25CEE /* LaunchScreen.storyboard */; };
 		72BA26551C6B985900F1FE22 /* RIGImageGallery.h in Headers */ = {isa = PBXBuildFile; fileRef = 72BA26541C6B985900F1FE22 /* RIGImageGallery.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,9 +22,17 @@
 		72BA26631C6B987200F1FE22 /* RIGImageGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BA265F1C6B987200F1FE22 /* RIGImageGalleryViewController.swift */; };
 		72BA26641C6B987200F1FE22 /* RIGImageGalleryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BA26601C6B987200F1FE22 /* RIGImageGalleryItem.swift */; };
 		72BA26651C6B987200F1FE22 /* RIGSingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BA26611C6B987200F1FE22 /* RIGSingleImageViewController.swift */; };
+		72FE02CC1D356C8500738265 /* SingleImageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FE02CB1D356C8500738265 /* SingleImageViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		72060F561D2FFA6C001281E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 72A827F01C68F17900B25CEE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 72BA26511C6B985900F1FE22;
+			remoteInfo = RIGImageGallery;
+		};
 		72BA26571C6B985900F1FE22 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 72A827F01C68F17900B25CEE /* Project object */;
@@ -46,10 +57,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		72060F501D2FFA6C001281E0 /* RIGImageGalleryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RIGImageGalleryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		72060F521D2FFA6C001281E0 /* AutoCenteringScrollViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCenteringScrollViewTests.swift; sourceTree = "<group>"; };
+		72060F541D2FFA6C001281E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7255D7D01D35246C0060479A /* TestingExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingExtensions.swift; sourceTree = "<group>"; };
+		7255D7D21D352D6D0060479A /* ImageGalleryViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageGalleryViewControllerTests.swift; sourceTree = "<group>"; };
 		72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RIGImageGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72A8280B1C68F24500B25CEE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72A8280D1C68F24500B25CEE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		72A828101C68F24500B25CEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		72A828121C68F24500B25CEE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		72A828151C68F24500B25CEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		72A828171C68F24500B25CEE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,9 +75,18 @@
 		72BA265F1C6B987200F1FE22 /* RIGImageGalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGImageGalleryViewController.swift; sourceTree = "<group>"; };
 		72BA26601C6B987200F1FE22 /* RIGImageGalleryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGImageGalleryItem.swift; sourceTree = "<group>"; };
 		72BA26611C6B987200F1FE22 /* RIGSingleImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RIGSingleImageViewController.swift; sourceTree = "<group>"; };
+		72FE02CB1D356C8500738265 /* SingleImageViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleImageViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		72060F4D1D2FFA6C001281E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72060F551D2FFA6C001281E0 /* RIGImageGallery.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72A828061C68F24500B25CEE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -81,12 +105,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		72060F511D2FFA6C001281E0 /* RIGImageGalleryTests */ = {
+			isa = PBXGroup;
+			children = (
+				72060F5B1D2FFA9C001281E0 /* Assets */,
+				72060F521D2FFA6C001281E0 /* AutoCenteringScrollViewTests.swift */,
+				7255D7D21D352D6D0060479A /* ImageGalleryViewControllerTests.swift */,
+				72FE02CB1D356C8500738265 /* SingleImageViewControllerTests.swift */,
+				7255D7D01D35246C0060479A /* TestingExtensions.swift */,
+			);
+			path = RIGImageGalleryTests;
+			sourceTree = "<group>";
+		};
+		72060F5B1D2FFA9C001281E0 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				72060F541D2FFA6C001281E0 /* Info.plist */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		72A827EF1C68F17900B25CEE = {
 			isa = PBXGroup;
 			children = (
 				72A827FA1C68F17900B25CEE /* Products */,
 				72BA26531C6B985900F1FE22 /* RIGImageGallery */,
 				72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */,
+				72060F511D2FFA6C001281E0 /* RIGImageGalleryTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,6 +140,7 @@
 			children = (
 				72A828091C68F24500B25CEE /* RIGImageGalleryDemo.app */,
 				72BA26521C6B985900F1FE22 /* RIGImageGallery.framework */,
+				72060F501D2FFA6C001281E0 /* RIGImageGalleryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,9 +148,9 @@
 		72A8280A1C68F24500B25CEE /* RIGImageGalleryDemo */ = {
 			isa = PBXGroup;
 			children = (
+				72E3A5B91D2FE4D600E9C023 /* App Delegate */,
 				72E3A5BB1D2FE4EC00E9C023 /* Assets */,
 				72E3A5BA1D2FE4E300E9C023 /* View Controller */,
-				72E3A5B91D2FE4D600E9C023 /* App Delegate */,
 			);
 			path = RIGImageGalleryDemo;
 			sourceTree = "<group>";
@@ -126,7 +172,7 @@
 			children = (
 				72A8280B1C68F24500B25CEE /* AppDelegate.swift */,
 			);
-			name = "App Delegate";
+			path = "App Delegate";
 			sourceTree = "<group>";
 		};
 		72E3A5BA1D2FE4E300E9C023 /* View Controller */ = {
@@ -134,18 +180,17 @@
 			children = (
 				72A8280D1C68F24500B25CEE /* ViewController.swift */,
 			);
-			name = "View Controller";
+			path = "View Controller";
 			sourceTree = "<group>";
 		};
 		72E3A5BB1D2FE4EC00E9C023 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				72A8280F1C68F24500B25CEE /* Main.storyboard */,
 				72A828121C68F24500B25CEE /* Assets.xcassets */,
-				72A828141C68F24500B25CEE /* LaunchScreen.storyboard */,
 				72A828171C68F24500B25CEE /* Info.plist */,
+				72A828141C68F24500B25CEE /* LaunchScreen.storyboard */,
 			);
-			name = Assets;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		72E3A5BF1D2FE52100E9C023 /* Assets */ = {
@@ -154,7 +199,7 @@
 				72BA26561C6B985900F1FE22 /* Info.plist */,
 				72BA26541C6B985900F1FE22 /* RIGImageGallery.h */,
 			);
-			name = Assets;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +216,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		72060F4F1D2FFA6C001281E0 /* RIGImageGalleryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 72060F581D2FFA6C001281E0 /* Build configuration list for PBXNativeTarget "RIGImageGalleryTests" */;
+			buildPhases = (
+				72060F4C1D2FFA6C001281E0 /* Sources */,
+				72060F4D1D2FFA6C001281E0 /* Frameworks */,
+				72060F4E1D2FFA6C001281E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				72060F571D2FFA6C001281E0 /* PBXTargetDependency */,
+			);
+			name = RIGImageGalleryTests;
+			productName = RIGImageGalleryTests;
+			productReference = 72060F501D2FFA6C001281E0 /* RIGImageGalleryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		72A828081C68F24500B25CEE /* RIGImageGalleryDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 72A828181C68F24500B25CEE /* Build configuration list for PBXNativeTarget "RIGImageGalleryDemo" */;
@@ -214,10 +277,13 @@
 		72A827F01C68F17900B25CEE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Raizlabs;
 				TargetAttributes = {
+					72060F4F1D2FFA6C001281E0 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					72A828081C68F24500B25CEE = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 336S848KQ4;
@@ -243,18 +309,25 @@
 			targets = (
 				72A828081C68F24500B25CEE /* RIGImageGalleryDemo */,
 				72BA26511C6B985900F1FE22 /* RIGImageGallery */,
+				72060F4F1D2FFA6C001281E0 /* RIGImageGalleryTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		72060F4E1D2FFA6C001281E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72A828071C68F24500B25CEE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				72A828161C68F24500B25CEE /* LaunchScreen.storyboard in Resources */,
 				72A828131C68F24500B25CEE /* Assets.xcassets in Resources */,
-				72A828111C68F24500B25CEE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +341,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		72060F4C1D2FFA6C001281E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7255D7D31D352D6D0060479A /* ImageGalleryViewControllerTests.swift in Sources */,
+				7255D7D11D35246C0060479A /* TestingExtensions.swift in Sources */,
+				72FE02CC1D356C8500738265 /* SingleImageViewControllerTests.swift in Sources */,
+				72060F531D2FFA6C001281E0 /* AutoCenteringScrollViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		72A828051C68F24500B25CEE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -291,6 +375,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		72060F571D2FFA6C001281E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 72BA26511C6B985900F1FE22 /* RIGImageGallery */;
+			targetProxy = 72060F561D2FFA6C001281E0 /* PBXContainerItemProxy */;
+		};
 		72BA26581C6B985900F1FE22 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 72BA26511C6B985900F1FE22 /* RIGImageGallery */;
@@ -299,25 +388,42 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		72A8280F1C68F24500B25CEE /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				72A828101C68F24500B25CEE /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		72A828141C68F24500B25CEE /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				72A828151C68F24500B25CEE /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		72060F591D2FFA6C001281E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = RIGImageGalleryTests/Assets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGalleryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		72060F5A1D2FFA6C001281E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = RIGImageGalleryTests/Assets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGalleryTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		72A827FF1C68F17900B25CEE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -415,7 +521,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Assets/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -431,7 +537,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/RIGImageGalleryDemo/Assets/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -449,7 +555,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = RIGImageGallery/Info.plist;
+				INFOPLIST_FILE = RIGImageGallery/Assets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGallery;
@@ -469,7 +575,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = RIGImageGallery/Info.plist;
+				INFOPLIST_FILE = RIGImageGallery/Assets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RIGImageGallery;
@@ -481,6 +587,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		72060F581D2FFA6C001281E0 /* Build configuration list for PBXNativeTarget "RIGImageGalleryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72060F591D2FFA6C001281E0 /* Debug */,
+				72060F5A1D2FFA6C001281E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		72A827F31C68F17900B25CEE /* Build configuration list for PBXProject "RIGImageGallery" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
