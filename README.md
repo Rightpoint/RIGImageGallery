@@ -7,7 +7,7 @@
 
 RIGImageGallery is an image gallery for iOS written in Swift.
 
-The goal is to offer sensible defaults that takes care of most of building an image gallery automatically, and offer easy block based customization..
+The goal is to offer sensible defaults that takes care of most of building an image gallery automatically, and offer easy, block-based customization.
 
 ## Installation with CocoaPods
 
