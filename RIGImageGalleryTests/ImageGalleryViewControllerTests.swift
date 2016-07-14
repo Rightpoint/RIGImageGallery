@@ -66,7 +66,7 @@ class ImageGalleryViewControllerTests: XCTestCase {
         waitForExpectationsWithTimeout(1.0, handler: nil)
         imageGallery.doneButton = UIBarButtonItem()
         let dismissFired = expectationWithDescription("dismiss handler will fire on completion")
-        imageGallery.dismissHandler = {
+        imageGallery.dismissHandler = { _ in
             dismissFired.fulfill()
         }
         imageGallery.performSelector((imageGallery.navigationItem.leftBarButtonItem?.action)!, withObject: imageGallery)

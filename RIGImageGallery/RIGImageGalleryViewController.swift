@@ -11,7 +11,7 @@ import UIKit
 public class RIGImageGalleryViewController: UIPageViewController {
 
     /// An optional closure to execute if the action button is tapped
-    public var actionButtonHandler: (RIGImageGalleryItem -> ())?
+    public var actionButtonHandler: ((gallery: RIGImageGalleryViewController, item:RIGImageGalleryItem) -> ())?
 
     /// An optional closure to allow cutom trait collection change handling
     public var traitCollectionChangeHandler: (RIGImageGalleryViewController -> ())? {
@@ -225,7 +225,7 @@ extension RIGImageGalleryViewController {
 
     func performAction(sender: UIBarButtonItem) {
         if let item = currentImageViewController?.viewerItem {
-            actionButtonHandler?(item)
+            actionButtonHandler?(gallery: self, item: item)
         }
     }
 

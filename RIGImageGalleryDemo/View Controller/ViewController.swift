@@ -51,6 +51,7 @@ private extension ViewController {
         let photoViewController = loadImages()
         photoViewController.dismissHandler = dismissPhotoViewer
         photoViewController.actionButtonHandler = actionButtonHandler
+        photoViewController.actionButton = UIBarButtonItem(barButtonSystemItem: .Action, target: nil, action: nil)
         photoViewController.traitCollectionChangeHandler = traitCollectionChangeHandler
         photoViewController.countUpdateHandler = updateCount
         let navigationController = navBarWrappedViewController(photoViewController)
@@ -65,7 +66,7 @@ private extension ViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func actionButtonHandler(galleryItem: RIGImageGalleryItem) {
+    func actionButtonHandler(_: RIGImageGalleryViewController,galleryItem: RIGImageGalleryItem) {
     }
 
     func updateCount(gallery: RIGImageGalleryViewController, position: Int, total: Int) {
