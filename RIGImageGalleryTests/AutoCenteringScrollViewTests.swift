@@ -12,16 +12,16 @@ import XCTest
 class AutoCenteringScrollViewTests: XCTestCase {
 
     var scrollView = RIGAutoCenteringScrollView(frame: CGRect())
-    
+
     override func setUp() {
         super.setUp()
         scrollView = RIGAutoCenteringScrollView(frame: CGRect(x: 0, y: 0, width: 400, height: 400))
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testSettingInsets() {
         XCTAssertEqual(scrollView.zoomScale, 1, "The scroll view's zoom scale should start at 1")
         XCTAssertEqual(scrollView.minimumZoomScale, 1, "The scroll view's min zoom scale should start at 1")

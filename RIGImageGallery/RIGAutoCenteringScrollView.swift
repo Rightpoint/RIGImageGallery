@@ -120,14 +120,14 @@ private extension RIGAutoCenteringScrollView {
         let vertical: CGFloat
         let horizontal: CGFloat
 
-        if (contentSize.width < adjustedSize.width) {
+        if contentSize.width < adjustedSize.width {
             horizontal = floor((adjustedSize.width - contentSize.width) * 0.5)
         }
         else {
             horizontal = 0
         }
 
-        if (contentSize.height < adjustedSize.height) {
+        if contentSize.height < adjustedSize.height {
             vertical = floor((adjustedSize.height - contentSize.height) * 0.5)
         }
         else {

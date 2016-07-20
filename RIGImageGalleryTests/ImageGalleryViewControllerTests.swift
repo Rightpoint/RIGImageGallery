@@ -23,7 +23,7 @@ class ImageGalleryViewControllerTests: XCTestCase {
         imageGallery.viewWillLayoutSubviews()
         imageGallery.viewWillAppear(false)
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
@@ -81,11 +81,14 @@ class ImageGalleryViewControllerTests: XCTestCase {
 
     func testPageViewController() {
         XCTAssertNotNil(imageGallery.viewControllers?.first as? RIGSingleImageViewController)
+        // swiftlint:disable:next force_cast
         let firstView = imageGallery.viewControllers!.first as! RIGSingleImageViewController
         XCTAssertEqual(firstView.viewerItem, imageGallery.images.first, "The first view should have the first image in the gallery")
         XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerBeforeViewController: firstView), "The view before the first view should be nil")
+        // swiftlint:disable:next force_cast
         let secondView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: firstView) as! RIGSingleImageViewController
         XCTAssertEqual(secondView.viewerItem, imageGallery.images[1], "The second view should have the second image in the gallery")
+        // swiftlint:disable:next force_cast
         XCTAssertEqual((imageGallery.pageViewController(imageGallery, viewControllerBeforeViewController: secondView) as! RIGSingleImageViewController).viewerItem, firstView.viewerItem, "the view before the second view should be the first view, which is testable by comparing viewer items")
         let thirdView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: secondView)!
         let fourthView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: thirdView)!

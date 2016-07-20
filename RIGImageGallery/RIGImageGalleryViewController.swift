@@ -10,24 +10,29 @@ import UIKit
 
 public class RIGImageGalleryViewController: UIPageViewController {
 
+    public typealias GalleryPositionUpdateHandler = (gallery: RIGImageGalleryViewController, position: Int, total: Int) -> ()
+    public typealias ActionButtonPressedHandler = (gallery: RIGImageGalleryViewController, item: RIGImageGalleryItem) -> ()
+    public typealias GalleryEventHandler = RIGImageGalleryViewController -> ()
+    public typealias IndexUpdateHandler = Int -> ()
+
     /// An optional closure to execute if the action button is tapped
-    public var actionButtonHandler: ((gallery: RIGImageGalleryViewController, item:RIGImageGalleryItem) -> ())?
+    public var actionButtonHandler: ActionButtonPressedHandler?
 
     /// An optional closure to allow cutom trait collection change handling
-    public var traitCollectionChangeHandler: (RIGImageGalleryViewController -> ())? {
+    public var traitCollectionChangeHandler: GalleryEventHandler? {
         didSet {
             traitCollectionChangeHandler?(self)
         }
     }
 
     /// An optional closure to execute when the active index is updated
-    public var indexUpdateHandler: (Int -> ())?
+    public var indexUpdateHandler: IndexUpdateHandler?
 
     /// An optional closure to handle dismissing the gallery, if this is nil the view will call `dismissViewControllerAnimated(true, completion: nil)`, if this is non-nil, the view controller will not dismiss itself
-    public var dismissHandler: (RIGImageGalleryViewController -> ())?
+    public var dismissHandler: GalleryEventHandler?
 
     /// An optional closure to handle updating the count text
-    public var countUpdateHandler: ((gallery: RIGImageGalleryViewController, position: Int, total: Int) -> ())? {
+    public var countUpdateHandler: GalleryPositionUpdateHandler? {
         didSet {
             updateCountText()
         }
@@ -104,8 +109,6 @@ public class RIGImageGalleryViewController: UIPageViewController {
 
     /**
      A convenience initializer to return a configured empty RIGImageGalleryViewController
-
-     - returns: the RIGImageGalleryViewController
      */
     public convenience init() {
         self.init(images: [])
@@ -115,8 +118,6 @@ public class RIGImageGalleryViewController: UIPageViewController {
      A convenience initializer to return a configured RIGImageGalleryViewController with an array of images
 
      - parameter images: The images to use in the gallery
-
-     - returns: the RIGImageGalleryViewController
      */
     public convenience init(images: [RIGImageGalleryItem]) {
         self.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])

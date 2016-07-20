@@ -66,7 +66,7 @@ private extension ViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    func actionButtonHandler(_: RIGImageGalleryViewController,galleryItem: RIGImageGalleryItem) {
+    func actionButtonHandler(_: RIGImageGalleryViewController, galleryItem: RIGImageGalleryItem) {
     }
 
     func updateCount(gallery: RIGImageGalleryViewController, position: Int, total: Int) {

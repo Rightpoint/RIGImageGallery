@@ -30,5 +30,5 @@ extension UIImage {
 
         return genericImage
     }
-    
+
 }
