@@ -27,15 +27,15 @@ class RIGSingleImageViewController: UIViewController {
     override func loadView() {
         automaticallyAdjustsScrollViewInsets = false
         view = scrollView
-        view.backgroundColor = .blackColor()
+        view.backgroundColor = .black
         view.clipsToBounds = true
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
     }

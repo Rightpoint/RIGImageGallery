@@ -44,7 +44,7 @@ class RIGAutoCenteringScrollView: UIScrollView {
         }
     }
 
-    private var contentView: UIImageView?
+    fileprivate var contentView: UIImageView?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,7 +65,7 @@ class RIGAutoCenteringScrollView: UIScrollView {
 
 extension RIGAutoCenteringScrollView {
 
-    func toggleZoom(animated animated: Bool = true) {
+    func toggleZoom(animated: Bool = true) {
         if zoomScale != minimumZoomScale {
             setZoomScale(minimumZoomScale, animated: animated)
         }
@@ -78,7 +78,7 @@ extension RIGAutoCenteringScrollView {
 
 private extension RIGAutoCenteringScrollView {
 
-    func updateZoomScale(preserveScale preserveScale: Bool) {
+    func updateZoomScale(preserveScale: Bool) {
         guard let image = zoomImage else {
             contentSize = frame.size
             minimumZoomScale = 1
@@ -113,7 +113,7 @@ private extension RIGAutoCenteringScrollView {
 
     // After much fiddling, using insets to correct zoom behavior was found at: http://petersteinberger.com/blog/2013/how-to-center-uiscrollview/
     func centerContent() {
-        guard !CGSizeEqualToSize(contentSize, CGSize()) else {
+        guard !contentSize.equalTo(CGSize()) else {
             return
         }
         let adjustedSize = UIEdgeInsetsInsetRect(bounds, baseInsets).size
@@ -141,11 +141,11 @@ private extension RIGAutoCenteringScrollView {
 
 extension RIGAutoCenteringScrollView: UIScrollViewDelegate {
 
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return allowZoom ? contentView : nil
     }
 
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centerContent()
     }
 

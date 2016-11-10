@@ -58,19 +58,19 @@ class ImageGalleryViewControllerTests: XCTestCase {
         // code coverage of the no delegate dismiss function
         imageGallery.dismissPhotoView(UIBarButtonItem())
         imageGallery.actionButton = UIBarButtonItem()
-        let actionFired = self.expectationWithDescription("action will fire on completion")
+        let actionFired = self.expectation(description: "action will fire on completion")
         imageGallery.actionButtonHandler = { _ in
             actionFired.fulfill()
         }
-        imageGallery.performSelector((imageGallery.navigationItem.rightBarButtonItem?.action)!, withObject: imageGallery)
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        imageGallery.perform((imageGallery.navigationItem.rightBarButtonItem?.action)!, with: imageGallery)
+        waitForExpectations(timeout: 1.0, handler: nil)
         imageGallery.doneButton = UIBarButtonItem()
-        let dismissFired = expectationWithDescription("dismiss handler will fire on completion")
+        let dismissFired = expectation(description: "dismiss handler will fire on completion")
         imageGallery.dismissHandler = { _ in
             dismissFired.fulfill()
         }
-        imageGallery.performSelector((imageGallery.navigationItem.leftBarButtonItem?.action)!, withObject: imageGallery)
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        imageGallery.perform((imageGallery.navigationItem.leftBarButtonItem?.action)!, with: imageGallery)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 
     func testStatusBarHidden() {
@@ -84,21 +84,21 @@ class ImageGalleryViewControllerTests: XCTestCase {
         // swiftlint:disable:next force_cast
         let firstView = imageGallery.viewControllers!.first as! RIGSingleImageViewController
         XCTAssertEqual(firstView.viewerItem, imageGallery.images.first, "The first view should have the first image in the gallery")
-        XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerBeforeViewController: firstView), "The view before the first view should be nil")
+        XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerBefore: firstView), "The view before the first view should be nil")
         // swiftlint:disable:next force_cast
-        let secondView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: firstView) as! RIGSingleImageViewController
+        let secondView = imageGallery.pageViewController(imageGallery, viewControllerAfter: firstView) as! RIGSingleImageViewController
         XCTAssertEqual(secondView.viewerItem, imageGallery.images[1], "The second view should have the second image in the gallery")
         // swiftlint:disable:next force_cast
-        XCTAssertEqual((imageGallery.pageViewController(imageGallery, viewControllerBeforeViewController: secondView) as! RIGSingleImageViewController).viewerItem, firstView.viewerItem, "the view before the second view should be the first view, which is testable by comparing viewer items")
-        let thirdView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: secondView)!
-        let fourthView = imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: thirdView)!
-        XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerAfterViewController: fourthView), "The view after the end of the list should be nil")
+        XCTAssertEqual((imageGallery.pageViewController(imageGallery, viewControllerBefore: secondView) as! RIGSingleImageViewController).viewerItem, firstView.viewerItem, "the view before the second view should be the first view, which is testable by comparing viewer items")
+        let thirdView = imageGallery.pageViewController(imageGallery, viewControllerAfter: secondView)!
+        let fourthView = imageGallery.pageViewController(imageGallery, viewControllerAfter: thirdView)!
+        XCTAssertNil(imageGallery.pageViewController(imageGallery, viewControllerAfter: fourthView), "The view after the end of the list should be nil")
     }
 
 }
 
 private extension RIGImageGalleryViewController {
-    static func updateCount(gallery: RIGImageGalleryViewController, position: Int, total: Int) {
-        gallery.countLabel.text = "\(position.successor()) of \(total)"
+    static func updateCount(_ gallery: RIGImageGalleryViewController, position: Int, total: Int) {
+        gallery.countLabel.text = "\((position + 1)) of \(total)"
     }
 }
