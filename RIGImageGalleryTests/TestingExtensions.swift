@@ -21,14 +21,14 @@ extension UIImage {
         return [UIImage.genericImage(.wide), UIImage.genericImage(.tall), UIImage.genericImage(.smallWide), UIImage.genericImage(.smallTall)]
     }
 
-    static func genericImage(size: CGSize) -> UIImage {
+    static func genericImage(_ size: CGSize) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, true, 0)
         let fillPath = UIBezierPath(rect: CGRect(origin: CGPoint(), size: size))
         fillPath.fill()
         let genericImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return genericImage
+        return genericImage!
     }
 
 }
