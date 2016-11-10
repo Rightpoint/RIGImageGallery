@@ -290,6 +290,7 @@
 					72A828081C68F24500B25CEE = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 336S848KQ4;
+						LastSwiftMigration = 0810;
 					};
 					72BA26511C6B985900F1FE22 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -568,6 +569,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -584,6 +586,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.raizlabs.RigImageGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

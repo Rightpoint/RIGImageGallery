@@ -168,7 +168,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
         }
     }
 
-    open override var prefersStatusBarHidden : Bool {
+    open override var prefersStatusBarHidden: Bool {
         return navigationBarsHidden
     }
 
@@ -298,7 +298,7 @@ private extension RIGImageGalleryViewController {
         setNeedsStatusBarAppearanceUpdate()
         UIView.animate(withDuration: 0.15, animations: {
             self.currentImageViewController?.scrollView.baseInsets = self.scrollViewInset
-        }) 
+        })
     }
 
     func handleImagesUpdate(oldValue: [RIGImageGalleryItem]) {
