@@ -74,9 +74,9 @@ class ImageGalleryViewControllerTests: XCTestCase {
     }
 
     func testStatusBarHidden() {
-        XCTAssertFalse(imageGallery.prefersStatusBarHidden())
+        XCTAssertFalse(imageGallery.prefersStatusBarHidden)
         imageGallery.toggleBarVisiblity(UITapGestureRecognizer())
-        XCTAssertTrue(imageGallery.prefersStatusBarHidden())
+        XCTAssertTrue(imageGallery.prefersStatusBarHidden)
     }
 
     func testPageViewController() {
