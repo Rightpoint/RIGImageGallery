@@ -1,5 +1,6 @@
 # RIGImageGallery
 
+[![Build Status](https://travis-ci.org/Raizlabs/RIGImageGallery.svg?branch=develop)](https://travis-ci.org/Raizlabs/RIGImageGallery)
 [![Version](https://img.shields.io/cocoapods/v/RIGImageGallery.svg?style=flat)](http://cocoapods.org/pods/RIGImageGallery)
 [![License](https://img.shields.io/cocoapods/l/RIGImageGallery.svg?style=flat)](http://cocoapods.org/pods/RIGImageGallery)
 [![Platform](https://img.shields.io/cocoapods/p/RIGImageGallery.svg?style=flat)](http://cocoapods.org/pods/RIGImageGallery)
