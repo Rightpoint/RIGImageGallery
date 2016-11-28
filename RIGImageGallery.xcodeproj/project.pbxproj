@@ -243,7 +243,6 @@
 				72A828061C68F24500B25CEE /* Frameworks */,
 				72A828071C68F24500B25CEE /* Resources */,
 				72BA263B1C6B97A500F1FE22 /* Embed Frameworks */,
-				7264CA1E1D3FC02E00033FC4 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -259,6 +258,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 72BA265B1C6B985A00F1FE22 /* Build configuration list for PBXNativeTarget "RIGImageGallery" */;
 			buildPhases = (
+				72D1B9C71DECB5D60049F060 /* SwiftLint */,
 				72BA264D1C6B985900F1FE22 /* Sources */,
 				72BA264E1C6B985900F1FE22 /* Frameworks */,
 				72BA264F1C6B985900F1FE22 /* Headers */,
@@ -360,7 +360,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
-		7264CA1E1D3FC02E00033FC4 /* SwiftLint */ = {
+		72D1B9C71DECB5D60049F060 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -372,7 +372,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint || echo \"warning: SwiftLint failed with exit code $?. Is SwiftLint installed and up to date?\"\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
