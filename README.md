@@ -54,7 +54,7 @@ To see a complete example of using the gallery, take a look at the [sample proje
 ```swift
 func createPhotoGallery() -> RIGImageGalleryViewController {
 
-    let urls =  [URL] = [
+    let urls: [URL] = [
           "https://placehold.it/1920x1080",
           "https://placehold.it/1080x1920",
           "https://placehold.it/350x150",
