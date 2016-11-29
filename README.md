@@ -7,11 +7,11 @@
 [![Platform](https://img.shields.io/cocoapods/p/RIGImageGallery.svg?style=flat)](http://cocoapods.org/pods/RIGImageGallery)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-RIGImageGallery is an image gallery for iOS written in Swift.
+RIGImageGallery is a photo gallery meant to provide most of the functionality of the image gallery in the system Photos app, and handle asynchronous loading of images.
 
 This library is part of the Raizlabs Interface Guidelines, which are  UI components that offer sensible defaults to help a project get off the ground quickly with components that feel native to the platform, and with easy to use customization options.
 
-RIGImageGallery is a photo gallery meant to provide most of the functionality of the image gallery in the system Photos app, and handle asynchronous loading of images.
+![RIGImageGallery](Resources/rig_demo.gif)
 
 ## Features
 
@@ -28,11 +28,9 @@ RIGImageGallery is a photo gallery meant to provide most of the functionality of
 ## Installation with CocoaPods
 
 #### CocoaPods
-You can use [CocoaPods](http://cocoapods.org) to install `RIGImageGallery` by adding it to your `Podfile`:
+RIGImageGallery is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
-platform :ios, '9.0'
-use_frameworks!
 pod 'RIGImageGallery'
 ```
 
@@ -52,27 +50,29 @@ github "Raizlabs/RIGImageGallery"
 To see a complete example of using the gallery, take a look at the [sample project](https://github.com/Raizlabs/RIGImageGallery/blob/develop/RIGImageGalleryDemo/View%20Controller/ViewController.swift).
 
 ### Creating a Gallery from Image URLs
-```swift
-static let urlsToLoad: [URL] = [
-    URL(string: "https://placehold.it/1920x1080"),
-    URL(string: "https://placehold.it/1080x1920"),
-    URL(string: "https://placehold.it/350x150"),
-    URL(string: "https://placehold.it/150x350"),
-    ].flatMap { $0 }
 
+```swift
 func createPhotoGallery() -> RIGImageGalleryViewController {
 
-    let urls = type(of: self).urlsToLoad
+    let urls =  [URL] = [
+          "https://placehold.it/1920x1080",
+          "https://placehold.it/1080x1920",
+          "https://placehold.it/350x150",
+          "https://placehold.it/150x350",
+        ].flatMap(URL.init(string:))
 
     let rigItems = urls.map { _ in
-        RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder") ?? UIImage())
+        RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder"))
     }
 
     let rigController = RIGImageGalleryViewController(images: rigItems)
 
     for (index, URL) in urls.enumerated() {
-        let completion = rigController.handleImageLoadAtIndex(index)
-        let request = imageSession.dataTask(with: URLRequest(url: URL), completionHandler: completion)
+        let request = imageSession.dataTask(with: URLRequest(url: URL)) { [weak rigController] data, _, error in
+            if let image = data.flatMap(UIImage.init), error == nil {
+                rigController?.images[index].image = image
+            }
+        }
         request.resume()
     }
 

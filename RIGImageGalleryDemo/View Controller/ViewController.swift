@@ -85,11 +85,11 @@ private extension ViewController {
 private extension ViewController {
 
     static let urls: [URL] = [
-        URL(string: "https://placehold.it/1920x1080"),
-        URL(string: "https://placehold.it/1080x1920"),
-        URL(string: "https://placehold.it/350x150"),
-        URL(string: "https://placehold.it/150x350"),
-        ].flatMap { $0 }
+        "https://placehold.it/1920x1080",
+        "https://placehold.it/1080x1920",
+        "https://placehold.it/350x150",
+        "https://placehold.it/150x350",
+        ].flatMap(URL.init(string:))
 
     func loadImages() -> RIGImageGalleryViewController {
 

@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { "Michael Skiba" => "mike.skiba@raizlabs.com" }
   s.source           = { :git => "https://github.com/raizlabs/RIGImageGallery.git", :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/raizlabs'
+  s.social_media_url = 'https://twitter.com/atelierclkwrk'
 
   s.ios.deployment_target = '9.0'
 
