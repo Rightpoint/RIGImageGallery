@@ -124,7 +124,6 @@ open class RIGImageGalleryViewController: UIPageViewController {
         self.images = images
     }
 
-
     public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]?) {
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
         dataSource = self
@@ -305,8 +304,10 @@ private extension RIGImageGalleryViewController {
         for viewController in childViewControllers {
             if let index = indexOf(viewController: viewController, imagesArray: oldValue),
                 let childView = viewController as? RIGSingleImageViewController, index < images.count {
-                childView.viewerItem = images[index]
-                childView.scrollView.baseInsets = scrollViewInset
+                DispatchQueue.main.async { [unowned self] in
+                    childView.viewerItem = self.images[index]
+                    childView.scrollView.baseInsets = self.scrollViewInset
+                }
             }
         }
         updateCountText()
