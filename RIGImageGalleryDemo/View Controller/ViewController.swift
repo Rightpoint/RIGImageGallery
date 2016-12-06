@@ -18,12 +18,14 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.title = NSLocalizedString("RIG Image Gallery", comment: "Main screen title")
 
-        let galleryButton = UIButton(type: .system)
-        galleryButton.translatesAutoresizingMaskIntoConstraints = false
-        galleryButton.addTarget(self, action: #selector(ViewController.showGallery(_:)), for: .touchUpInside)
-        galleryButton.setTitle(NSLocalizedString("Show Gallery", comment: "Show gallery button title"), for: UIControlState())
+        let remoteGalleryButton = UIButton(type: .system)
+        remoteGalleryButton.addTarget(self, action: #selector(ViewController.showOnlineGallery(_:)), for: .touchUpInside)
+        remoteGalleryButton.setTitle(NSLocalizedString("Show Online Gallery", comment: "Show gallery button title"), for: .normal)
+        let localGalleryButton = UIButton(type: .system)
+        localGalleryButton.setTitle(NSLocalizedString("Show Local Gallery", comment: "Show Local Gallery"), for: .normal)
+        localGalleryButton.addTarget(self, action: #selector(ViewController.showLocalGallery(_:)), for: .touchUpInside)
 
-        let stackView = UIStackView(arrangedSubviews: [galleryButton])
+        let stackView = UIStackView(arrangedSubviews: [remoteGalleryButton, localGalleryButton])
         stackView.alignment = .center
         stackView.axis = .vertical
         stackView.isLayoutMarginsRelativeArrangement = true
@@ -47,8 +49,8 @@ class ViewController: UIViewController {
 
 private extension ViewController {
 
-    @objc func showGallery(_ sender: UIButton) {
-        let photoViewController = loadImages()
+    @objc func showOnlineGallery(_ sender: UIButton) {
+        let photoViewController = prepareRemoteGallery()
         photoViewController.dismissHandler = dismissPhotoViewer
         photoViewController.actionButtonHandler = actionButtonHandler
         photoViewController.actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
@@ -58,6 +60,16 @@ private extension ViewController {
         present(navigationController, animated: true, completion: nil)
     }
 
+    @objc func showLocalGallery(_ sender: UIButton) {
+        let photoViewController = prepareLocalGallery()
+        photoViewController.dismissHandler = dismissPhotoViewer
+        photoViewController.actionButtonHandler = actionButtonHandler
+        photoViewController.actionButton = UIBarButtonItem(barButtonSystemItem: .action, target: nil, action: nil)
+        photoViewController.traitCollectionChangeHandler = traitCollectionChangeHandler
+        photoViewController.countUpdateHandler = updateCount
+        let navigationController = navBarWrappedViewController(photoViewController)
+        present(navigationController, animated: true, completion: nil)
+    }
 }
 
 private extension ViewController {
@@ -91,7 +103,7 @@ private extension ViewController {
         "https://placehold.it/150x350",
         ].flatMap(URL.init(string:))
 
-    func loadImages() -> RIGImageGalleryViewController {
+    func prepareRemoteGallery() -> RIGImageGalleryViewController {
 
         let urls = type(of: self).urls
 
@@ -108,6 +120,19 @@ private extension ViewController {
         }
 
         rigController.setCurrentImage(2, animated: false)
+        return rigController
+    }
+
+    func prepareLocalGallery() -> RIGImageGalleryViewController {
+
+        let items: [UIImage] = ["1", "2", "3", "4", "5", "6"].flatMap(UIImage.init(named:))
+
+        let rigItems = items.map { item in
+            RIGImageGalleryItem(image: item)
+        }
+
+        let rigController = RIGImageGalleryViewController(images: rigItems)
+
         return rigController
     }
 
