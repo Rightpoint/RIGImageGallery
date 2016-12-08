@@ -48,6 +48,8 @@ class RIGAutoCenteringScrollView: UIScrollView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
         delegate = self
     }
 

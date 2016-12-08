@@ -1,5 +1,8 @@
 statement_position:
   statement_mode: uncuddled_else
 
+trailing_comma:
+  mandatory_comma: true
+
 disabled_rules:
   - line_length
