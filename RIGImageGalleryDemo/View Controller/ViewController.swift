@@ -127,11 +127,19 @@ private extension ViewController {
 
         let items: [UIImage] = ["1", "2", "3", "4", "5", "6"].flatMap(UIImage.init(named:))
 
-        let rigItems = items.map { item in
-            RIGImageGalleryItem(image: item)
+        let rigItems: [RIGImageGalleryItem] = items.map { item in
+            var item = RIGImageGalleryItem(image: item)
+            item.isLoading = true
+            return item
         }
 
         let rigController = RIGImageGalleryViewController(images: rigItems)
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(2)) {
+            for index in 0..<rigController.images.count {
+                rigController.images[index].isLoading = false
+            }
+        }
 
         return rigController
     }
@@ -148,7 +156,7 @@ private extension ViewController {
 }
 
 private extension RIGImageGalleryViewController {
-    func handleImageLoadAtIndex(_ index: Int) -> ((Data?, URLResponse?, Error?) -> ()) {
+    func handleImageLoadAtIndex(_ index: Int) -> ((Data?, URLResponse?, Error?) -> Void) {
         return { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             guard let image = data.flatMap(UIImage.init), error == nil else {
                 if let error = error {

@@ -8,34 +8,44 @@
 
 import UIKit
 
-class RIGSingleImageViewController: UIViewController {
+open class RIGSingleImageViewController: UIViewController {
 
-    var viewerItem: RIGImageGalleryItem? {
+    open var viewerItem: RIGImageGalleryItem? {
         didSet {
             viewerItemUpdated()
         }
     }
 
-    let scrollView = RIGAutoCenteringScrollView()
+    open let scrollView = RIGAutoCenteringScrollView()
+    open let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
 
-    convenience init(viewerItem: RIGImageGalleryItem) {
+    public convenience init(viewerItem: RIGImageGalleryItem) {
         self.init()
         self.viewerItem = viewerItem
+    }
+
+    open override func loadView() {
+        automaticallyAdjustsScrollViewInsets = false
+        view = UIView()
+        view.addSubview(scrollView)
+        view.addSubview(activityIndicator)
+        view.backgroundColor = .black
+        view.clipsToBounds = true
+        configureConstraints()
+        view.setNeedsLayout()
+    }
+
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         viewerItemUpdated()
     }
 
-    override func loadView() {
-        automaticallyAdjustsScrollViewInsets = false
-        view = scrollView
-        view.backgroundColor = .black
-        view.clipsToBounds = true
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
     }
@@ -45,8 +55,28 @@ class RIGSingleImageViewController: UIViewController {
 private extension RIGSingleImageViewController {
 
     func viewerItemUpdated() {
+        if viewerItem?.isLoading == true && !activityIndicator.isAnimating {
+            activityIndicator.startAnimating()
+        }
+        else if viewerItem?.isLoading == false && activityIndicator.isAnimating {
+            activityIndicator.stopAnimating()
+        }
         scrollView.allowZoom = viewerItem?.image != nil
+        scrollView.isUserInteractionEnabled = viewerItem?.isLoading == false
+        scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
         scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
     }
 
+    func configureConstraints() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
+            ])
+    }
 }

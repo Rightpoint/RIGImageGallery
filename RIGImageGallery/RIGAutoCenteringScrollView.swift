@@ -8,17 +8,17 @@
 
 import UIKit
 
-class RIGAutoCenteringScrollView: UIScrollView {
+open class RIGAutoCenteringScrollView: UIScrollView {
 
-    var allowZoom: Bool = false
+    internal var allowZoom: Bool = false
 
-    var baseInsets: UIEdgeInsets = UIEdgeInsets() {
+    internal var baseInsets: UIEdgeInsets = UIEdgeInsets() {
         didSet {
             updateZoomScale(preserveScale: true)
         }
     }
 
-    var zoomImage: UIImage? {
+    open var zoomImage: UIImage? {
         didSet {
             if oldValue === zoomImage {
                 return
@@ -46,18 +46,18 @@ class RIGAutoCenteringScrollView: UIScrollView {
 
     fileprivate var contentView: UIImageView?
 
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         delegate = self
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override var frame: CGRect {
+    open override var frame: CGRect {
         didSet {
             updateZoomScale(preserveScale: true)
         }
@@ -68,11 +68,13 @@ class RIGAutoCenteringScrollView: UIScrollView {
 extension RIGAutoCenteringScrollView {
 
     func toggleZoom(animated: Bool = true) {
-        if zoomScale != minimumZoomScale {
-            setZoomScale(minimumZoomScale, animated: animated)
-        }
-        else {
-            setZoomScale(maximumZoomScale, animated: animated)
+        if self.isUserInteractionEnabled {
+            if zoomScale != minimumZoomScale {
+                setZoomScale(minimumZoomScale, animated: animated)
+            }
+            else {
+                setZoomScale(maximumZoomScale, animated: animated)
+            }
         }
     }
 
@@ -143,11 +145,11 @@ private extension RIGAutoCenteringScrollView {
 
 extension RIGAutoCenteringScrollView: UIScrollViewDelegate {
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return allowZoom ? contentView : nil
     }
 
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+    open func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centerContent()
     }
 

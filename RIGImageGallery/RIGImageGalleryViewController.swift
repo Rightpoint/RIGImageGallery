@@ -10,10 +10,10 @@ import UIKit
 
 open class RIGImageGalleryViewController: UIPageViewController {
 
-    public typealias GalleryPositionUpdateHandler = (_ gallery: RIGImageGalleryViewController, _ position: Int, _ total: Int) -> ()
-    public typealias ActionButtonPressedHandler = (_ gallery: RIGImageGalleryViewController, _ item: RIGImageGalleryItem) -> ()
-    public typealias GalleryEventHandler = (RIGImageGalleryViewController) -> ()
-    public typealias IndexUpdateHandler = (Int) -> ()
+    public typealias GalleryPositionUpdateHandler = (_ gallery: RIGImageGalleryViewController, _ position: Int, _ total: Int) -> Void
+    public typealias ActionButtonPressedHandler = (_ gallery: RIGImageGalleryViewController, _ item: RIGImageGalleryItem) -> Void
+    public typealias GalleryEventHandler = (RIGImageGalleryViewController) -> Void
+    public typealias IndexUpdateHandler = (Int) -> Void
 
     /// An optional closure to execute if the action button is tapped
     open var actionButtonHandler: ActionButtonPressedHandler?
@@ -181,6 +181,14 @@ open class RIGImageGalleryViewController: UIPageViewController {
         traitCollectionChangeHandler?(self)
     }
 
+    /// Allows subclasses of RIGImageGallery to customize the gallery page
+    ///
+    /// - Parameter viewerItem: The item to be displayed
+    /// - Returns: The view controller that will display the item
+    open func createNewPage(for viewerItem: RIGImageGalleryItem) -> UIViewController {
+        return RIGSingleImageViewController(viewerItem: viewerItem)
+    }
+
 }
 
 extension RIGImageGalleryViewController: UIGestureRecognizerDelegate {
@@ -237,16 +245,14 @@ extension RIGImageGalleryViewController: UIPageViewControllerDataSource {
         guard let index = indexOf(viewController: viewController), index < images.count - 1 else {
             return nil
         }
-        let zoomView = RIGSingleImageViewController(viewerItem: images[index + 1])
-        return zoomView
+        return createNewPage(for: images[index + 1])
     }
 
     public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = indexOf(viewController: viewController), index > 0 else {
             return nil
         }
-        let zoomView = RIGSingleImageViewController(viewerItem: images[index - 1])
-        return zoomView
+        return createNewPage(for: images[index + -1])
     }
 
 }
