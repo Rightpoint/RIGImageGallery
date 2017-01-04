@@ -27,6 +27,7 @@ open class RIGSingleImageViewController: UIViewController {
     public convenience init(viewerItem: RIGImageGalleryItem) {
         self.init()
         self.viewerItem = viewerItem
+        viewerItemUpdated()
     }
 
     open override func loadView() {
@@ -64,7 +65,9 @@ private extension RIGSingleImageViewController {
         scrollView.allowZoom = viewerItem?.image != nil
         scrollView.isUserInteractionEnabled = viewerItem?.isLoading == false
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
-        scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
+        if !view.frame.isEmpty {
+            scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
+        }
     }
 
     func configureConstraints() {
