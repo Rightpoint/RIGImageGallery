@@ -107,19 +107,23 @@ private extension ViewController {
 
         let urls = type(of: self).urls
 
-        let rigItems = urls.map { _ in
-            RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder") ?? UIImage())
+        let rigItems: [RIGImageGalleryItem] = urls.map { url in
+            RIGImageGalleryItem(placeholderImage: #imageLiteral(resourceName: "placeholder"),
+                                title: url.pathComponents.last ?? "",
+                                isLoading: true)
         }
 
         let rigController = RIGImageGalleryViewController(images: rigItems)
 
-        for (index, URL) in urls.enumerated() {
+        for (index, URL) in  urls.enumerated() {
             let completion = rigController.handleImageLoadAtIndex(index)
-            let request = imageSession.dataTask(with: URLRequest(url: URL), completionHandler: completion)
+            let request = imageSession.dataTask(with: URLRequest(url: URL),
+                                                completionHandler: completion)
             request.resume()
         }
 
         rigController.setCurrentImage(2, animated: false)
+
         return rigController
     }
 
@@ -128,18 +132,10 @@ private extension ViewController {
         let items: [UIImage] = ["1", "2", "3", "4", "5", "6"].flatMap(UIImage.init(named:))
 
         let rigItems: [RIGImageGalleryItem] = items.map { item in
-            var item = RIGImageGalleryItem(image: item)
-            item.isLoading = true
-            return item
+            RIGImageGalleryItem(image: item)
         }
 
         let rigController = RIGImageGalleryViewController(images: rigItems)
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(2)) {
-            for index in 0..<rigController.images.count {
-                rigController.images[index].isLoading = false
-            }
-        }
 
         return rigController
     }
@@ -164,9 +160,8 @@ private extension RIGImageGalleryViewController {
                 }
                 return
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self?.images[index].image = image
-            }
+            self?.images[index].isLoading = false
+            self?.images[index].image = image
         }
     }
 }

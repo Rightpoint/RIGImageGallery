@@ -24,32 +24,24 @@ open class RIGAutoCenteringScrollView: UIScrollView {
                 return
             }
             if let img = zoomImage {
-                let imageView: UIImageView
-                if let img = contentView {
-                    imageView = img
-                }
-                else {
-                    imageView = UIImageView()
-                    contentView = imageView
-                    addSubview(imageView)
-                }
-                imageView.frame = CGRect(origin: CGPoint(), size: img.size)
-                imageView.image = img
+                contentView.isHidden = false
+                contentView.image = img
             }
             else {
-                contentView?.removeFromSuperview()
-                contentView = nil
+                contentView.isHidden = true
             }
             updateZoomScale(preserveScale: false)
         }
     }
 
-    fileprivate var contentView: UIImageView?
+    fileprivate var contentView = UIImageView()
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
+        addSubview(contentView)
+        configureConstraints()
         delegate = self
     }
 
@@ -82,6 +74,16 @@ extension RIGAutoCenteringScrollView {
 
 private extension RIGAutoCenteringScrollView {
 
+    func configureConstraints() {
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            ])
+    }
+
     func updateZoomScale(preserveScale: Bool) {
         guard let image = zoomImage else {
             contentSize = frame.size
@@ -90,6 +92,8 @@ private extension RIGAutoCenteringScrollView {
             setZoomScale(1, animated: false)
             return
         }
+        updateConstraintsIfNeeded()
+        layoutIfNeeded()
 
         let adjustedFrame = UIEdgeInsetsInsetRect(frame, baseInsets)
 
@@ -139,6 +143,9 @@ private extension RIGAutoCenteringScrollView {
         }
 
         contentInset = UIEdgeInsets(top: vertical + baseInsets.top, left: horizontal + baseInsets.left, bottom: vertical + baseInsets.bottom, right: horizontal + baseInsets.right)
+
+        updateConstraintsIfNeeded()
+        layoutIfNeeded()
     }
 
 }

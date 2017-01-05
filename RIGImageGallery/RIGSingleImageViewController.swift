@@ -35,7 +35,6 @@ open class RIGSingleImageViewController: UIViewController {
         view = UIView()
         view.addSubview(scrollView)
         view.addSubview(activityIndicator)
-        view.backgroundColor = .black
         view.clipsToBounds = true
         configureConstraints()
         view.setNeedsLayout()
@@ -64,10 +63,10 @@ private extension RIGSingleImageViewController {
         }
         scrollView.allowZoom = viewerItem?.image != nil
         scrollView.isUserInteractionEnabled = viewerItem?.isLoading == false
-        scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
         if !view.frame.isEmpty {
             scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
         }
+        scrollView.setZoomScale(scrollView.minimumZoomScale, animated: false)
     }
 
     func configureConstraints() {

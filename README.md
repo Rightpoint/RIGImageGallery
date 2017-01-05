@@ -61,8 +61,9 @@ func createPhotoGallery() -> RIGImageGalleryViewController {
           "https://placehold.it/150x350",
         ].flatMap(URL.init(string:))
 
-    let rigItems = urls.map { _ in
-        RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder"))
+    let rigItems: [RIGImageGalleryItem] = urls.map { _ in
+        RIGImageGalleryItem(placeholderImage: UIImage(named: "placeholder") ?? UIImage(),
+                            isLoading: true)
     }
 
     let rigController = RIGImageGalleryViewController(images: rigItems)
@@ -71,6 +72,7 @@ func createPhotoGallery() -> RIGImageGalleryViewController {
         let request = imageSession.dataTask(with: URLRequest(url: URL)) { [weak rigController] data, _, error in
             if let image = data.flatMap(UIImage.init), error == nil {
                 rigController?.images[index].image = image
+                rigController?.images[index].isLoading = false
             }
         }
         request.resume()
