@@ -19,11 +19,14 @@ public struct RIGImageGalleryItem: Equatable {
     public var placeholderImage: UIImage?
     /// The title of the image
     public var title: String?
+    // The loading state
+    public var isLoading: Bool
 
-    public init(image: UIImage? = nil, placeholderImage: UIImage? = nil, title: String? = nil) {
+    public init(image: UIImage? = nil, placeholderImage: UIImage? = nil, title: String? = nil, isLoading: Bool = false) {
         self.image = image
         self.placeholderImage = placeholderImage
         self.title = title
+        self.isLoading = isLoading
     }
 
 }

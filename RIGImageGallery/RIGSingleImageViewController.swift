@@ -8,34 +8,52 @@
 
 import UIKit
 
-class RIGSingleImageViewController: UIViewController {
+open class RIGSingleImageViewController: UIViewController {
 
-    var viewerItem: RIGImageGalleryItem? {
+    open var viewerItem: RIGImageGalleryItem? {
         didSet {
             viewerItemUpdated()
         }
     }
 
-    let scrollView = RIGAutoCenteringScrollView()
+    open let scrollView = RIGAutoCenteringScrollView()
+    open var activityIndicator: UIActivityIndicatorView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+            if let newValue = activityIndicator {
+                view.addSubview(newValue)
+                NSLayoutConstraint.activate([
+                    newValue.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
+                    newValue.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
+                    ])
+            }
+        }
+    }
 
-    convenience init(viewerItem: RIGImageGalleryItem) {
+    public convenience init(viewerItem: RIGImageGalleryItem) {
         self.init()
         self.viewerItem = viewerItem
         viewerItemUpdated()
     }
 
-    override func loadView() {
+    open override func viewDidLoad() {
+        super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
-        view = scrollView
-        view.backgroundColor = .black
         view.clipsToBounds = true
+        view.addSubview(scrollView)
+        let indicatorView = UIActivityIndicatorView()
+        indicatorView.activityIndicatorViewStyle = .gray
+        indicatorView.hidesWhenStopped = true
+        self.activityIndicator = indicatorView
+        configureConstraints()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        viewerItemUpdated()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
     }
@@ -45,8 +63,28 @@ class RIGSingleImageViewController: UIViewController {
 private extension RIGSingleImageViewController {
 
     func viewerItemUpdated() {
+        if viewerItem?.isLoading == true && activityIndicator?.isAnimating == false {
+            activityIndicator?.startAnimating()
+        }
+        else if viewerItem?.isLoading == false && activityIndicator?.isAnimating == true {
+            activityIndicator?.stopAnimating()
+        }
         scrollView.allowZoom = viewerItem?.image != nil
-        scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
+        scrollView.isUserInteractionEnabled = viewerItem?.isLoading == false
+        if !view.frame.isEmpty {
+            scrollView.zoomImage = viewerItem?.image ?? viewerItem?.placeholderImage
+        }
+        scrollView.setZoomScale(scrollView.minimumZoomScale, animated: false)
     }
 
+    func configureConstraints() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+    }
 }
