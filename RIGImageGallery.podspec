@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "RIGImageGallery"
-  s.version          = "0.2.2"
+  s.version          = "0.3.0"
   s.summary          = "An image gallery view controller designed to work with the Raizlabs Interface Guidelines for iOS."
 
   s.description      = <<-DESC
