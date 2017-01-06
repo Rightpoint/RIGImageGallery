@@ -129,7 +129,6 @@ open class RIGImageGalleryViewController: UIPageViewController {
         dataSource = self
         delegate = self
         automaticallyAdjustsScrollViewInsets = false
-        view.backgroundColor = .black
         handleImagesUpdate(oldValue: [])
         configureDoneButton()
         configureActionButton()

@@ -17,12 +17,18 @@ open class RIGSingleImageViewController: UIViewController {
     }
 
     open let scrollView = RIGAutoCenteringScrollView()
-    open let activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.activityIndicatorViewStyle = .gray
-        activityIndicator.hidesWhenStopped = true
-        return activityIndicator
-    }()
+    open var activityIndicator: UIActivityIndicatorView? {
+        didSet {
+            oldValue?.removeFromSuperview()
+            if let newValue = activityIndicator {
+                view.addSubview(newValue)
+                NSLayoutConstraint.activate([
+                    newValue.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
+                    newValue.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
+                    ])
+            }
+        }
+    }
 
     public convenience init(viewerItem: RIGImageGalleryItem) {
         self.init()
@@ -30,14 +36,16 @@ open class RIGSingleImageViewController: UIViewController {
         viewerItemUpdated()
     }
 
-    open override func loadView() {
+    open override func viewDidLoad() {
+        super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
-        view = UIView()
-        view.addSubview(scrollView)
-        view.addSubview(activityIndicator)
         view.clipsToBounds = true
+        view.addSubview(scrollView)
+        let indicatorView = UIActivityIndicatorView()
+        indicatorView.activityIndicatorViewStyle = .gray
+        indicatorView.hidesWhenStopped = true
+        self.activityIndicator = indicatorView
         configureConstraints()
-        view.setNeedsLayout()
     }
 
     open override func viewDidLayoutSubviews() {
@@ -55,11 +63,11 @@ open class RIGSingleImageViewController: UIViewController {
 private extension RIGSingleImageViewController {
 
     func viewerItemUpdated() {
-        if viewerItem?.isLoading == true && !activityIndicator.isAnimating {
-            activityIndicator.startAnimating()
+        if viewerItem?.isLoading == true && activityIndicator?.isAnimating == false {
+            activityIndicator?.startAnimating()
         }
-        else if viewerItem?.isLoading == false && activityIndicator.isAnimating {
-            activityIndicator.stopAnimating()
+        else if viewerItem?.isLoading == false && activityIndicator?.isAnimating == true {
+            activityIndicator?.stopAnimating()
         }
         scrollView.allowZoom = viewerItem?.image != nil
         scrollView.isUserInteractionEnabled = viewerItem?.isLoading == false
@@ -71,14 +79,12 @@ private extension RIGSingleImageViewController {
 
     func configureConstraints() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            activityIndicator.centerXAnchor.constraint(equalTo: view.layoutMarginsGuide.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
             ])
     }
 }
