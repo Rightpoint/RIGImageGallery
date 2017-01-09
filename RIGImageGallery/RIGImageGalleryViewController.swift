@@ -87,7 +87,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
             setViewControllers([UIViewController()], direction: .forward, animated: animated, completion: nil)
             return
         }
-        let newView = RIGSingleImageViewController(viewerItem: images[currentImage])
+        let newView = createNewPage(for: images[currentImage])
         let direction: UIPageViewControllerNavigationDirection
         if self.currentImage < currentImage {
             direction = .forward
@@ -162,7 +162,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
         super.viewWillAppear(animated)
         updateBarStatus(animated: false)
         if currentImage < images.count {
-            let photoPage =  RIGSingleImageViewController(viewerItem: images[currentImage])
+            let photoPage = createNewPage(for: images[currentImage])
             setViewControllers([photoPage], direction: .forward, animated: false, completion: nil)
         }
     }
@@ -301,7 +301,7 @@ private extension RIGImageGalleryViewController {
         navigationController?.setToolbarHidden(navigationBarsHidden, animated: animated)
         navigationController?.setNavigationBarHidden(navigationBarsHidden, animated: animated)
         setNeedsStatusBarAppearanceUpdate()
-        UIView.animate(withDuration: 0.15, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.currentImageViewController?.scrollView.baseInsets = self.scrollViewInset
         })
     }
