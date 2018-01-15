@@ -60,7 +60,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
     }
 
     /// The index of the image currently bieng displayed
-    open fileprivate(set) var currentImage: Int = 0 {
+    open var currentImage: Int = 0 {
         didSet {
             indexUpdateHandler?(currentImage)
             updateCountText()
