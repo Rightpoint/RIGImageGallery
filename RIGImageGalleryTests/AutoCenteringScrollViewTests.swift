@@ -34,13 +34,13 @@ class AutoCenteringScrollViewTests: XCTestCase {
         scrollView.zoomImage = image
         // double setting to get code coverage on the short circuit for not doing any work when setting the same image
         scrollView.zoomImage = image
-        XCTAssertEqualWithAccuracy(scrollView.minimumZoomScale, (400.0 - 50.0 - 50.0) / 1920, accuracy: 0.0001, "min zoom scale is should equal the width minus insets divided by image width")
+        XCTAssertEqual(scrollView.minimumZoomScale, (400.0 - 50.0 - 50.0) / 1920, accuracy: 0.0001, "min zoom scale is should equal the width minus insets divided by image width")
         scrollView.zoomImage = UIImage.genericImage(.tall)
-        XCTAssertEqualWithAccuracy(scrollView.minimumZoomScale, (400.0 - 25.0 - 25.0) / 720.0, accuracy: 0.0001, "Scoll view's min scroll view should equal the height minus insets divied be image height for taller images")
+        XCTAssertEqual(scrollView.minimumZoomScale, (400.0 - 25.0 - 25.0) / 720.0, accuracy: 0.0001, "Scoll view's min scroll view should equal the height minus insets divied be image height for taller images")
         scrollView.baseInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        XCTAssertEqualWithAccuracy(scrollView.minimumZoomScale, 400.0 / 720.0, accuracy: 0.0001, "Scoll view's min scroll view should equal the height minus insets divied be image height for taller images")
+        XCTAssertEqual(scrollView.minimumZoomScale, 400.0 / 720.0, accuracy: 0.0001, "Scoll view's min scroll view should equal the height minus insets divied be image height for taller images")
         scrollView.baseInsets = targetInsets
-        XCTAssertEqualWithAccuracy(scrollView.minimumZoomScale, (400.0 - 25.0 - 25.0) / 720.0, accuracy: 0.0001, "Scoll view's min scroll view should equal the height minus insets divied be image height for taller images")
+        XCTAssertEqual(scrollView.minimumZoomScale, (400.0 - 25.0 - 25.0) / 720.0, accuracy: 0.0001, "Scoll view's min scroll view should equal the height minus insets divied be image height for taller images")
         scrollView.zoomImage = nil
     }
 

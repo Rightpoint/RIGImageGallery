@@ -213,16 +213,16 @@ extension RIGImageGalleryViewController: UIGestureRecognizerDelegate {
 
 extension RIGImageGalleryViewController {
 
-    func toggleBarVisiblity(_ recognizer: UITapGestureRecognizer) {
+    @objc func toggleBarVisiblity(_ recognizer: UITapGestureRecognizer) {
         navigationBarsHidden = !navigationBarsHidden
         updateBarStatus(animated: true)
     }
 
-    func toggleZoom(_ recognizer: UITapGestureRecognizer) {
+    @objc func toggleZoom(_ recognizer: UITapGestureRecognizer) {
         currentImageViewController?.scrollView.toggleZoom()
     }
 
-    func dismissPhotoView(_ sender: UIBarButtonItem) {
+    @objc func dismissPhotoView(_ sender: UIBarButtonItem) {
         if dismissHandler != nil {
             dismissHandler?(self)
         }
@@ -231,7 +231,7 @@ extension RIGImageGalleryViewController {
         }
     }
 
-    func performAction(_ sender: UIBarButtonItem) {
+    @objc func performAction(_ sender: UIBarButtonItem) {
         if let item = currentImageViewController?.viewerItem {
             actionButtonHandler?(self, item)
         }

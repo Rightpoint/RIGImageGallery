@@ -59,7 +59,7 @@ class ImageGalleryViewControllerTests: XCTestCase {
         imageGallery.dismissPhotoView(UIBarButtonItem())
         imageGallery.actionButton = UIBarButtonItem()
         let actionFired = self.expectation(description: "action will fire on completion")
-        imageGallery.actionButtonHandler = { _ in
+        imageGallery.actionButtonHandler = { (_, _) in
             actionFired.fulfill()
         }
         imageGallery.perform((imageGallery.navigationItem.rightBarButtonItem?.action)!, with: imageGallery)
