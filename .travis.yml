@@ -13,7 +13,7 @@ matrix:
   exclude:
     - os: osx
   include:
-    - osx_image: xcode8
+    - osx_image: xcode9.2
       env:
         - XCODE_ACTION="clean test"
           XCODE_TOOLCHAIN="swift"
@@ -26,7 +26,7 @@ matrix:
         - brew outdated carthage || brew upgrade carthage
         - carthage build --no-skip-current
         - test -d Carthage/Build/iOS/RIGImageGallery.framework || exit 1
-    - osx_image: xcode8
+    - osx_image: xcode9.2
       env:
         - JOB=COCOAPODS
       script:
