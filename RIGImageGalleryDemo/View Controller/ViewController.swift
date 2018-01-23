@@ -152,7 +152,6 @@ private extension ViewController {
 }
 
 private extension RIGImageGalleryViewController {
-    // swiftlint:disable:next large_tuple
     func handleImageLoadAtIndex(_ index: Int) -> ((Data?, URLResponse?, Error?) -> Void) {
         return { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             guard let image = data.flatMap(UIImage.init), error == nil else {

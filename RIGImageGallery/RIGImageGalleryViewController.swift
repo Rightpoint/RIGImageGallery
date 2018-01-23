@@ -124,7 +124,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
         self.images = images
     }
 
-    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]?) {
+    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String: Any]?) {
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
         dataSource = self
         delegate = self
