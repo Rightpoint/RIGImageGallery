@@ -310,9 +310,10 @@ private extension RIGImageGalleryViewController {
         for viewController in childViewControllers {
             if let index = indexOf(viewController: viewController, imagesArray: oldValue),
                 let childView = viewController as? RIGSingleImageViewController, index < images.count {
-                DispatchQueue.main.async { [unowned self] in
-                    childView.viewerItem = self.images[index]
-                    childView.scrollView.baseInsets = self.scrollViewInset
+                DispatchQueue.main.async { [weak self] in
+                    guard let strongSelf = self else { return }
+                    childView.viewerItem = strongSelf.images[index]
+                    childView.scrollView.baseInsets = strongSelf.scrollViewInset
                 }
             }
         }
