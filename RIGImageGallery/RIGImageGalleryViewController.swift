@@ -124,7 +124,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
         self.images = images
     }
 
-    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]?) {
+    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String: Any]?) {
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
         dataSource = self
         delegate = self
@@ -213,16 +213,16 @@ extension RIGImageGalleryViewController: UIGestureRecognizerDelegate {
 
 extension RIGImageGalleryViewController {
 
-    func toggleBarVisiblity(_ recognizer: UITapGestureRecognizer) {
+    @objc func toggleBarVisiblity(_ recognizer: UITapGestureRecognizer) {
         navigationBarsHidden = !navigationBarsHidden
         updateBarStatus(animated: true)
     }
 
-    func toggleZoom(_ recognizer: UITapGestureRecognizer) {
+    @objc func toggleZoom(_ recognizer: UITapGestureRecognizer) {
         currentImageViewController?.scrollView.toggleZoom()
     }
 
-    func dismissPhotoView(_ sender: UIBarButtonItem) {
+    @objc func dismissPhotoView(_ sender: UIBarButtonItem) {
         if dismissHandler != nil {
             dismissHandler?(self)
         }
@@ -231,7 +231,7 @@ extension RIGImageGalleryViewController {
         }
     }
 
-    func performAction(_ sender: UIBarButtonItem) {
+    @objc func performAction(_ sender: UIBarButtonItem) {
         if let item = currentImageViewController?.viewerItem {
             actionButtonHandler?(self, item)
         }
@@ -310,9 +310,10 @@ private extension RIGImageGalleryViewController {
         for viewController in childViewControllers {
             if let index = indexOf(viewController: viewController, imagesArray: oldValue),
                 let childView = viewController as? RIGSingleImageViewController, index < images.count {
-                DispatchQueue.main.async { [unowned self] in
-                    childView.viewerItem = self.images[index]
-                    childView.scrollView.baseInsets = self.scrollViewInset
+                DispatchQueue.main.async { [weak self] in
+                    guard let strongSelf = self else { return }
+                    childView.viewerItem = strongSelf.images[index]
+                    childView.scrollView.baseInsets = strongSelf.scrollViewInset
                 }
             }
         }

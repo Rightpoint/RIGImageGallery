@@ -13,11 +13,11 @@ matrix:
   exclude:
     - os: osx
   include:
-    - osx_image: xcode8
+    - osx_image: xcode9.2
       env:
         - XCODE_ACTION="clean test"
           XCODE_TOOLCHAIN="swift"
-          XCODE_DESTINATION="platform=iOS Simulator,id=237D7619-4A4E-4624-8925-67A42A8A690A"
+          XCODE_DESTINATION="platform=iOS Simulator,name=iPhone 6s"
     - osx_image: xcode8
       env:
         - JOB=CARTHAGE
@@ -26,7 +26,7 @@ matrix:
         - brew outdated carthage || brew upgrade carthage
         - carthage build --no-skip-current
         - test -d Carthage/Build/iOS/RIGImageGallery.framework || exit 1
-    - osx_image: xcode8
+    - osx_image: xcode9.2
       env:
         - JOB=COCOAPODS
       script:
