@@ -88,7 +88,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
             return
         }
         let newView = createNewPage(for: images[currentImage])
-        let direction: UIPageViewControllerNavigationDirection
+        let direction: UIPageViewController.NavigationDirection
         if self.currentImage < currentImage {
             direction = .forward
         }
@@ -100,10 +100,10 @@ open class RIGImageGalleryViewController: UIPageViewController {
     }
 
     /// The label used to display the current position in the array
-    open let countLabel: UILabel = {
+    public let countLabel: UILabel = {
         let counter = UILabel()
         counter.textColor = .white
-        counter.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+        counter.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.subheadline)
         return counter
     }()
 
@@ -120,12 +120,15 @@ open class RIGImageGalleryViewController: UIPageViewController {
      - parameter images: The images to use in the gallery
      */
     public convenience init(images: [RIGImageGalleryItem]) {
-        self.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
+        self.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: convertToOptionalUIPageViewControllerOptionsKeyDictionary([convertFromUIPageViewControllerOptionsKey(UIPageViewController.OptionsKey.interPageSpacing): 20]))
         self.images = images
     }
 
-    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]?) {
-        super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
+    public override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]?) {
+// Local variable inserted by Swift 4.2 migrator.
+let options = convertFromOptionalUIPageViewControllerOptionsKeyDictionary(options)
+
+        super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: convertToOptionalUIPageViewControllerOptionsKeyDictionary(options))
         dataSource = self
         delegate = self
         automaticallyAdjustsScrollViewInsets = false
@@ -213,16 +216,16 @@ extension RIGImageGalleryViewController: UIGestureRecognizerDelegate {
 
 extension RIGImageGalleryViewController {
 
-    func toggleBarVisiblity(_ recognizer: UITapGestureRecognizer) {
+    @objc func toggleBarVisiblity(_ recognizer: UITapGestureRecognizer) {
         navigationBarsHidden = !navigationBarsHidden
         updateBarStatus(animated: true)
     }
 
-    func toggleZoom(_ recognizer: UITapGestureRecognizer) {
+    @objc func toggleZoom(_ recognizer: UITapGestureRecognizer) {
         currentImageViewController?.scrollView.toggleZoom()
     }
 
-    func dismissPhotoView(_ sender: UIBarButtonItem) {
+    @objc func dismissPhotoView(_ sender: UIBarButtonItem) {
         if dismissHandler != nil {
             dismissHandler?(self)
         }
@@ -231,7 +234,7 @@ extension RIGImageGalleryViewController {
         }
     }
 
-    func performAction(_ sender: UIBarButtonItem) {
+    @objc func performAction(_ sender: UIBarButtonItem) {
         if let item = currentImageViewController?.viewerItem {
             actionButtonHandler?(self, item)
         }
@@ -307,7 +310,7 @@ private extension RIGImageGalleryViewController {
     }
 
     func handleImagesUpdate(oldValue: [RIGImageGalleryItem]) {
-        for viewController in childViewControllers {
+        for viewController in children {
             if let index = indexOf(viewController: viewController, imagesArray: oldValue),
                 let childView = viewController as? RIGSingleImageViewController, index < images.count {
                 DispatchQueue.main.async { [unowned self] in
@@ -334,4 +337,21 @@ private extension RIGImageGalleryViewController {
         countLabel.sizeToFit()
     }
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromOptionalUIPageViewControllerOptionsKeyDictionary(_ input: [UIPageViewController.OptionsKey: Any]?) -> [String: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalUIPageViewControllerOptionsKeyDictionary(_ input: [String: Any]?) -> [UIPageViewController.OptionsKey: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIPageViewController.OptionsKey(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIPageViewControllerOptionsKey(_ input: UIPageViewController.OptionsKey) -> String {
+	return input.rawValue
 }
