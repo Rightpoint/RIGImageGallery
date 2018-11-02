@@ -16,7 +16,7 @@ open class RIGSingleImageViewController: UIViewController {
         }
     }
 
-    open let scrollView = RIGAutoCenteringScrollView()
+    public let scrollView = RIGAutoCenteringScrollView()
     open var activityIndicator: UIActivityIndicatorView? {
         didSet {
             oldValue?.removeFromSuperview()
@@ -42,7 +42,7 @@ open class RIGSingleImageViewController: UIViewController {
         view.clipsToBounds = true
         view.addSubview(scrollView)
         let indicatorView = UIActivityIndicatorView()
-        indicatorView.activityIndicatorViewStyle = .gray
+        indicatorView.style = .gray
         indicatorView.hidesWhenStopped = true
         self.activityIndicator = indicatorView
         configureConstraints()
