@@ -60,7 +60,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
     }
 
     /// The index of the image currently bieng displayed
-    open var currentImage: Int = 0 {
+    open fileprivate(set) var currentImage: Int = 0 {
         didSet {
             indexUpdateHandler?(currentImage)
             updateCountText()
@@ -88,7 +88,7 @@ open class RIGImageGalleryViewController: UIPageViewController {
             return
         }
         let newView = createNewPage(for: images[currentImage])
-        let direction: UIPageViewControllerNavigationDirection
+        let direction: UIPageViewController.NavigationDirection
         if self.currentImage < currentImage {
             direction = .forward
         }
@@ -100,10 +100,10 @@ open class RIGImageGalleryViewController: UIPageViewController {
     }
 
     /// The label used to display the current position in the array
-    open let countLabel: UILabel = {
+    public let countLabel: UILabel = {
         let counter = UILabel()
         counter.textColor = .white
-        counter.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+        counter.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.subheadline)
         return counter
     }()
 
@@ -120,11 +120,11 @@ open class RIGImageGalleryViewController: UIPageViewController {
      - parameter images: The images to use in the gallery
      */
     public convenience init(images: [RIGImageGalleryItem]) {
-        self.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [UIPageViewControllerOptionInterPageSpacingKey: 20])
+        self.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: [.interPageSpacing: 20])
         self.images = images
     }
 
-    public override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]?) {
+    public override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]?) {
         super.init(transitionStyle: style, navigationOrientation: navigationOrientation, options: options)
         dataSource = self
         delegate = self
@@ -213,15 +213,18 @@ extension RIGImageGalleryViewController: UIGestureRecognizerDelegate {
 
 extension RIGImageGalleryViewController {
 
+    @objc
     func toggleBarVisiblity(_ recognizer: UITapGestureRecognizer) {
         navigationBarsHidden = !navigationBarsHidden
         updateBarStatus(animated: true)
     }
 
+    @objc
     func toggleZoom(_ recognizer: UITapGestureRecognizer) {
         currentImageViewController?.scrollView.toggleZoom()
     }
 
+    @objc
     func dismissPhotoView(_ sender: UIBarButtonItem) {
         if dismissHandler != nil {
             dismissHandler?(self)
@@ -231,6 +234,7 @@ extension RIGImageGalleryViewController {
         }
     }
 
+    @objc
     func performAction(_ sender: UIBarButtonItem) {
         if let item = currentImageViewController?.viewerItem {
             actionButtonHandler?(self, item)
@@ -282,7 +286,7 @@ private extension RIGImageGalleryViewController {
         guard let item = (viewController as? RIGSingleImageViewController)?.viewerItem else {
             return nil
         }
-        return (imagesArray ?? images).index(of: item)
+        return (imagesArray ?? images).firstIndex(of: item)
     }
 
     func configureDoneButton() {
@@ -307,7 +311,7 @@ private extension RIGImageGalleryViewController {
     }
 
     func handleImagesUpdate(oldValue: [RIGImageGalleryItem]) {
-        for viewController in childViewControllers {
+        for viewController in children {
             if let index = indexOf(viewController: viewController, imagesArray: oldValue),
                 let childView = viewController as? RIGSingleImageViewController, index < images.count {
                 DispatchQueue.main.async { [unowned self] in

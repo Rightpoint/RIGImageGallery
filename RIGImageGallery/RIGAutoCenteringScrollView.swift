@@ -95,7 +95,7 @@ private extension RIGAutoCenteringScrollView {
         updateConstraintsIfNeeded()
         layoutIfNeeded()
 
-        let adjustedFrame = UIEdgeInsetsInsetRect(frame, baseInsets)
+        let adjustedFrame = frame.inset(by: baseInsets)
 
         let wScale = adjustedFrame.width / image.size.width
         let hScale = adjustedFrame.height / image.size.height
@@ -124,7 +124,7 @@ private extension RIGAutoCenteringScrollView {
         guard !contentSize.equalTo(CGSize()) else {
             return
         }
-        let adjustedSize = UIEdgeInsetsInsetRect(bounds, baseInsets).size
+        let adjustedSize = bounds.inset(by: baseInsets).size
         let vertical: CGFloat
         let horizontal: CGFloat
 
